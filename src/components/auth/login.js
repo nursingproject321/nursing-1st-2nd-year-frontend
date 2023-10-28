@@ -1,5 +1,5 @@
 import React, {
-    useContext, useRef, useCallback, useEffect
+    useContext, useRef, useCallback, useEffect, useState
 } from "react";
 import { redirect, useNavigate } from "react-router-dom";
 import Typography from "@mui/material/Typography";
@@ -19,11 +19,14 @@ import ShowSnackbarAlert from "../common/SnackBarAlert";
 import * as ValidateUtils from "./utils";
 import { UserContext } from "../../services";
 import Logo from "../../images/logo.png";
-import { setAuthTokenToLocalStorage } from "../../axios";
+import { setAuthTokenToLocalStorage, setSessionTokenToLocalStorage } from "../../axios";
 
 export default function Login() {
     const { userData, setUserData } = useContext(UserContext);
     const navigate = useNavigate();
+
+    const [loginResponse, setLoginResponse] = useState(null);
+    const [agencyResponse, setAgencyResponse] = useState(null);
 
     const usernameRef = useRef(null);
     const passwordRef = useRef(null);
@@ -39,6 +42,46 @@ export default function Login() {
         window.location.replace("/admindashboard");
     };
 
+    const sendLoginRequest = async () => {
+        console.log("Huh!?");
+        const response = await fetch("http://localhost:8000/user/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                username: "alex@uwindsor.ca",
+                password: "alex"
+            })
+        });
+
+        const responseBody = await response.json();
+        setLoginResponse(responseBody);
+
+        // Extract the session token from the response headers
+        console.log("Session token: ", response);
+        const sessionToken = response.headers.get("set-cookie");
+    };
+
+    const handleTempSubmit = async () => {
+        // sendLoginRequest();
+        const username = "alex@uwindsor.ca";
+        const password = "alex";
+        const response = await axios.post(
+            "/user/login",
+            {
+                username,
+                password
+            }
+        );
+        // setLoginResponse(response.data);
+
+        // const sessionToken = response.headers["Set-Sookie"];
+        // // localStorage.setItem("session-token", sessionToken);
+        console.log("Session token: ", response.session);
+        // setSessionTokenToLocalStorage(sessionToken);
+        navigate("/studentdashboard");
+    };
     // const handleSubmit = async () => {
     //     try {
     //         // debugger;
@@ -160,7 +203,8 @@ export default function Login() {
             <LoadingButton
                 ref={btnRef}
                 label="Admin Login"
-                onClick={handleSubmit}
+                // onClick={handleSubmit}
+                onClick={handleTempSubmit}
                 sx={{ mt: 3, width: 150 }}
             />
         );
@@ -171,7 +215,8 @@ export default function Login() {
             <LoadingButton
                 ref={btnRef}
                 label="Login"
-                onClick={handleStudentSubmit}
+                // onClick={handleStudentSubmit}
+                onClick={handleTempSubmit}
                 sx={{ mt: 3, width: 150, ml: 3 }}
             />
         );

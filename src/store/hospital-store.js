@@ -16,9 +16,18 @@ class HospitalStore {
         // const requestBody = {
         //     type: "hospital"
         // };
-        const response = await axios.post("/agency/list", {
-            type: "hospital"
-        });
+        // const sessionToken = localStorage.getItem("session-token");
+        const response = await axios.post(
+            "/agency/list",
+            {
+                type: "hospital"
+            }// ,
+            // {
+            //     headers: {
+            //         Cookie: sessionToken
+            //     }
+            // }
+        );
         const { data, totalCount } = response.data;
         runInAction(() => {
             this.list = data;
