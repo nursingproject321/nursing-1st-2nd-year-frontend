@@ -466,20 +466,12 @@ function HospitalRegistrationForm() {
     //     });
     // }, []);
 
-    useEffect(() => {
-        GlobalEventEmitter.emit(EVENTS.UPDATE_TOP_BAR, {
-            text: editObj ? (
-                <>
-                    Student -
-                    <em>
-                        {`${editObj.fname} ${editObj.lname}`}
-
-                    </em>
-                </>
-            ) : "Add New Student",
-            navigateBackTo: "/hospital_form"
-        });
-    }, [editObj]);
+    // useEffect(() => {
+    //     GlobalEventEmitter.emit(EVENTS.UPDATE_TOP_BAR, {
+    //         text: "Community Registration Form",
+    //         navigateBackTo: "/hospital_form"
+    //     });
+    // }, [editObj]);
 
     return (
         <Box>

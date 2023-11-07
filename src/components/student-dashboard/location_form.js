@@ -65,97 +65,10 @@ function LocationForm() {
     const notesRef = useRef(null);
 
     const { list, totalCount, fetched } = schoolStore;
-
-    const handleAddClick = useCallback(() => {
-        navigate({ pathname: "add" });
-    }, []);
     const handleTabChange = (event, newValue) => {
         setSelectedTab(newValue);
     };
-    const fetchDetailsIfNeeded = useCallback(async () => {
-        if (editId) {
-            const student = await studentStore.get(editId);
-            setEditObj(student);
-        }
 
-        setLoading(false);
-    }, []);
-
-    const handleImportClick = useCallback(() => {
-        ShowDialog({
-            title: "Import Schools",
-            actionBtnName: "Import",
-            content: <UploadFile
-                ref={uploadFileRef}
-                headers={SCHOOL_IMPORT_REQUIRED_HEADERS}
-            />,
-            onConfirm: async () => {
-                const fileData = await uploadFileRef.current.getFileData();
-                if (fileData) {
-                    try {
-                        await schoolStore.import(fileData);
-                        ShowSuccessAlert("Imported successfully");
-                    } catch (err) {
-                        ShowErrorAlert(err.message);
-                    }
-                } else {
-                    ShowErrorAlert("Please select the file", 3000);
-                }
-            }
-        });
-    }, []);
-
-    const handleEditRow = useCallback((index) => {
-        const schoolList = toJS(schoolStore.list);
-        navigate({
-            pathname: "edit",
-            search: createSearchParams({
-                id: schoolList[index]._id
-            }).toString()
-        });
-    }, []);
-
-    const handleDeleteRow = useCallback((index) => {
-        ShowConfirmDialog({
-            title: "Delete School",
-            description: "Are you sure you want to delete this school?",
-            actionBtnName: "Delete",
-            onConfirm: async () => {
-                try {
-                    await schoolStore.delete(index);
-                    ShowSnackbarAlert({
-                        message: "Deleted successfully"
-                    });
-                } catch (err) {
-                    ShowSnackbarAlert({
-                        message: err.message, severity: "error"
-
-                    });
-                }
-            }
-        });
-    }, []);
-
-    const handleDeleteSelectedRows = useCallback((selectedRows) => {
-        ShowConfirmDialog({
-            title: "Delete Schools",
-            description: `Are you sure you want to delete these ${selectedRows.length} school(s)?`,
-            actionBtnName: "Delete",
-            onConfirm: async () => {
-                try {
-                    await schoolStore.deleteMultiple(selectedRows);
-                    ShowSnackbarAlert({
-                        message: "Deleted successfully"
-                    });
-                } catch (err) {
-                    ShowSnackbarAlert({
-                        message: err.message, severity: "error"
-
-                    });
-                }
-            }
-        });
-    }, []);
     const goBack = useCallback(() => {
         navigate("/students");
     }, []);
@@ -183,116 +96,6 @@ function LocationForm() {
         return err === null;
     }, []);
 
-    const getToolBarActions = useCallback(() => (
-        <Box
-            sx={{
-                width: { xs: "30%", lg: "40%" },
-                margin: "1px 1px 1px 1px",
-                textAlign: "left"
-            }}
-        >
-            <Button
-                startIcon={<AddIcon />}
-                onClick={handleAddClick}
-            >
-                Add
-            </Button>
-            <Button
-                startIcon={<UploadIcon />}
-                onClick={handleImportClick}
-            >
-                Import
-            </Button>
-        </Box>
-    ), []);
-
-    const columns = useMemo(() => [
-        {
-            name: "name", label: "Name"
-        },
-        {
-            name: "campus", label: "Campus"
-        },
-        {
-            name: "",
-            options: {
-                viewColumns: false,
-                setCellProps: () => ({ style: { width: "100px" } }),
-                // eslint-disable-next-line react/no-unstable-nested-components
-                customBodyRender: (value, tableMeta) => (
-                    <Box sx={{ display: "flex", gap: "1rem" }}>
-                        <Tooltip
-                            title="Edit"
-                            arrow
-                            placement="left"
-                        >
-                            <EditIcon
-                                color="action"
-                                className="actionIcon"
-                                fontSize="small"
-                                sx={{ cursor: "pointer" }}
-                                onClick={() => handleEditRow(tableMeta.rowIndex)}
-                            />
-                        </Tooltip>
-                        <Tooltip
-                            title="Delete"
-                            arrow
-                            placement="right"
-                        >
-                            <DeleteIcon
-                                color="error"
-                                className="actionIcon"
-                                fontSize="small"
-                                sx={{ cursor: "pointer" }}
-                                onClick={() => handleDeleteRow(tableMeta.rowIndex)}
-                            />
-                        </Tooltip>
-                    </Box>
-                )
-            }
-        }
-    ], []);
-
-    useEffect(() => {
-        const fetchSchools = async () => {
-            if (!fetched) {
-                await schoolStore.fetchAll();
-            }
-        };
-
-        fetchSchools();
-    }, []);
-    const toggleTextField = () => {
-        setIsTextFieldDisabled(!isTextFieldDisabled);
-    };
-
-    // const handleChange = (e) => {
-    //     const { name, value, type } = e.target;
-    //     setFormData((prevData) => ({
-    //         ...prevData,
-    //         [name]: type === "checkbox" ? e.target.checked : value
-    //     }));
-    // };
-
-    // const handleSubmit = async (e) => {
-    //     e.preventDefault();
-    //     try {
-    //         const response = await axios.post("/students", formData);
-    //         console.log("Server Response:", response.data); // Add this line
-    //         alert("Student created successfully!");
-    //         setFormData({
-    //             firstName: "",
-    //             lastName: "",
-    //             phoneNumber: "",
-    //             email: "",
-    //             studentNumber: "",
-    //             intake: ""
-    //         });
-    //     } catch (error) {
-    //         console.error("Error creating student:", error);
-    //         alert("Error creating student.");
-    //     }
-    // };
     const handleSubmit = useCallback(async () => {
         const fname = fnameRef.current.value();
         const lname = lnameRef.current.value();
@@ -342,66 +145,45 @@ function LocationForm() {
         }
     }, [editObj]);
     function renderContent() {
+        const nursingList = ["University of Windsor", "St. Clair College Windsor", "St. Clair College Chatham", "Lambton College Sarnia"];
+        const clinicalScheduleList = ["Clinical in Fall (10 remaining)", "Clinical in Winter (0 remaining)", "Clinical in Summer (0 remaining)"];
+        const hospitalList = ["Windsor-Essex", "Chatham-Kent", "Sarnia-Lambton"];
         return (
             <Stack sx={{ width: "50%", my: 2 }} spacing={2}>
-                <TextField
-                    label="Student ID"
-                    ref={studentIdRef}
-                    value={editObj?.studentId}
-                    required
-                    autoFocus
-                />
-                <TextField
-                    label="First name"
-                    ref={fnameRef}
-                    value={editObj?.fname}
-                    required
-                />
-                <TextField
-                    label="Last name"
-                    ref={lnameRef}
-                    value={editObj?.lname}
-                    required
-                />
-                <TextField
-                    label="Email"
-                    ref={emailRef}
-                    value={editObj?.email}
-                    required
-                />
-                {/* <TextField
-                    label="Phone number"
-                    ref={phoneNumberRef}
-                    value={editObj?.phoneNumber}
-                    required
-                />
                 <SelectBox
-                    label="Select School"
-                    ref={schoolRef}
-                    required
-                    selected={editObj?.school._id}
-                    options={schoolList}
-                /> */}
-                <SelectBox
-                    label="Select Year"
+                    label="At which site did you begin your nursing?"
                     ref={yearRef}
                     required
-                    selected={editObj?.year || ""}
-                    options={getYearsList()}
+                    selected=""
+                    options={nursingList}
                 />
                 <SelectBox
-                    label="Select Term"
+                    label="At which site will you be completing your final term of the nursing program?"
                     ref={termRef}
-                    selected={editObj?.term || ""}
-                    options={TermsList}
+                    selected=""
+                    options={nursingList}
                     required
                 />
-                <TextField
-                    label="Notes"
-                    ref={notesRef}
-                    value={editObj?.notes || ""}
-                    multiline
-                    rows={4}
+                <SelectBox
+                    label="Please select the semester sequence for your clinical schedule"
+                    ref={termRef}
+                    selected=""
+                    options={clinicalScheduleList}
+                    required
+                />
+                <SelectBox
+                    label="Preferred placement location for Hospital Clinical"
+                    ref={termRef}
+                    selected=""
+                    options={hospitalList}
+                    required
+                />
+                <SelectBox
+                    label="Preferred placement location for Community Clinical"
+                    ref={termRef}
+                    selected=""
+                    options={hospitalList}
+                    required
                 />
             </Stack>
         );
@@ -461,29 +243,21 @@ function LocationForm() {
         );
     }
 
-    useEffect(() => {
-        fetchDetailsIfNeeded();
+    // useEffect(() => {
+    //     fetchDetailsIfNeeded();
 
-        GlobalEventEmitter.emit(EVENTS.UPDATE_TOP_BAR, {
-            text: editId ? "Edit Student" : "Add Student",
-            navigateBackTo: "/location_form"
-        });
-    }, []);
+    //     GlobalEventEmitter.emit(EVENTS.UPDATE_TOP_BAR, {
+    //         text: editId ? "Edit Student" : "Add Student",
+    //         navigateBackTo: "/location_form"
+    //     });
+    // }, []);
 
-    useEffect(() => {
-        GlobalEventEmitter.emit(EVENTS.UPDATE_TOP_BAR, {
-            text: editObj ? (
-                <>
-                    Student -
-                    <em>
-                        {`${editObj.fname} ${editObj.lname}`}
-
-                    </em>
-                </>
-            ) : "Add New Student",
-            navigateBackTo: "/location_form"
-        });
-    }, [editObj]);
+    // useEffect(() => {
+    //     GlobalEventEmitter.emit(EVENTS.UPDATE_TOP_BAR, {
+    //         text: "Year 4 Clinical Placement Plan",
+    //         navigateBackTo: "/location_form"
+    //     });
+    // }, [editObj]);
 
     return (
         <Box>
@@ -520,8 +294,8 @@ function LocationForm() {
             </Drawer>
             <Box sx={{ overflow: "auto", height: "calc(100vh - 60px)", px: 2 }}>
                 <h1>Location Form</h1>
-                {loading ? <SkeletonLoader /> : renderTabs()}
-                <div>
+                {renderTabs()}
+                {/* <div>
                     <label htmlFor="text-field">Text Field:</label>
                     <input
                         type="text"
@@ -531,7 +305,7 @@ function LocationForm() {
                     <button type="button" onClick={toggleTextField}>
                         {isTextFieldDisabled ? "Enable" : "Disable"}
                     </button>
-                </div>
+                </div> */}
             </Box>
         </Box>
     );

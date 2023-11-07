@@ -48,7 +48,7 @@ function HospitalFormComponent({ agencyType }) {
                 console.log(response.data.message);
                 // Handle success, e.g., show a success message to the user
             })
-            .catch((error) => console.error(error));
+            .catch((error) => console.error(error.response.data.message));
     };
 
     return (

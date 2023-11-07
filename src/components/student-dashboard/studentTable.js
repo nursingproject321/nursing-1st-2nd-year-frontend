@@ -51,6 +51,7 @@ export default function StudentTable({ data }) {
                         <TableRow>
                             <TableCell>No.</TableCell>
                             <TableCell>Hospital Name</TableCell>
+                            <TableCell>Agency Type</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -68,6 +69,9 @@ export default function StudentTable({ data }) {
                                         <Link component={RouterLink} to={`/hospital_details/${row._id}`}>
                                             {row.name}
                                         </Link>
+                                    </TableCell>
+                                    <TableCell>
+                                        {row.placement_type}
                                     </TableCell>
                                 </TableRow>
                             ))}

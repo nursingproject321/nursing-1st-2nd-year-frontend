@@ -74,12 +74,6 @@ export default function Login() {
                 password
             }
         );
-        // setLoginResponse(response.data);
-
-        // const sessionToken = response.headers["Set-Sookie"];
-        // // localStorage.setItem("session-token", sessionToken);
-        console.log("Session token: ", response.session);
-        // setSessionTokenToLocalStorage(sessionToken);
         navigate("/studentdashboard");
     };
     // const handleSubmit = async () => {
