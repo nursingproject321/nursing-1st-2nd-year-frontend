@@ -23,81 +23,43 @@ import HospitalList from "./components/student-dashboard/HospitalList.js";
 
 export default function App() {
     const [userData, setUserData] = useState({
-        token: undefined,
         user: undefined,
         fetched: false
     });
 
-    const fetchCurrentUser = useCallback(async () => {
-        const token = getAuthTokenFromLocalStorage();
+    // const fetchCurrentUser = useCallback(async () => {
+    //     userData = localStorage.getItem("userdata");
+    //     return {
+    //         user: userData.user
+    //     };
+    // }, []);
 
-        if (!token) {
-            setAuthTokenToLocalStorage("");
-            return null;
-        }
+    // const checkIfUserLoggedIn = useCallback(async () => {
+    //     const user = JSON.parse(localStorage.getItem("userdata"));
+    //     console.log("user set:", user);
+    //     if (user) {
+    //         setUserData({
+    //             user,
+    //             fetched: true
+    //         });
+    //     }
+    // }, []);
 
-        const tokenResponse = await axios.post("/user/isValidToken", null, {
-            headers: { "x-auth-token": token }
-        });
-
-        if (tokenResponse.data) {
-            const userRes = await axios.get("/user", {
-                headers: { "x-auth-token": token }
-            });
-
-            setAuthTokenToLocalStorage(token);
-
-            return {
-                token,
-                user: userRes.data
-            };
-        }
-
-        return null;
-    }, []);
-
-    const checkIfUserLoggedIn = useCallback(async () => {
-        try {
-            const currentUserData = await fetchCurrentUser();
-            setUserData({
-                ...(currentUserData || userData),
-                fetched: true
-            });
-        } catch {
-            setAuthTokenToLocalStorage("");
-        }
-    }, []);
-
-    useEffect(() => {
-        checkIfUserLoggedIn();
-    }, []);
+    // useEffect(() => {
+    //     checkIfUserLoggedIn();
+    // }, []);
 
     function renderContent() {
-        if (userData.fetched) {
-            return (
-                <Box component="main" sx={{ flexGrow: 1 }}>
-                    <Div100vh
-                        style={{
-                            display: "flex",
-                            flexDirection: "column"
-                        }}
-                    >
-                        <Topbar />
-                        <AppRoutes />
-                    </Div100vh>
-                </Box>
-            );
-        }
-
         return (
-            <Box
-                sx={{
-                    width: { xs: "95%", lg: "30%" },
-                    margin: "15% auto",
-                    textAlign: "center"
+            <Box component="main" sx={{ flexGrow: 1 }}>
+                <Div100vh style={{
+                    display: "flex",
+                    flexDirection: "column"
                 }}
-            >
-                <CircularProgress />
+                >
+                    <Topbar />
+                    <AppRoutes />
+                </Div100vh>
             </Box>
         );
     }
@@ -110,12 +72,6 @@ export default function App() {
                         <CssBaseline />
                         <LeftMenu />
                         {renderContent()}
-                        {/* Add the routing for hospital list and details */}
-                        {/* <Routes>
-                            <Route path="/" element={renderContent()} />
-                            <Route path="/hospital/:id" element={<HospitalDetails />} />
-                            <Route path="/hospital" element={<HospitalList />} />
-                        </Routes> */}
                     </Box>
                 </UserContextProvider>
             </BrowserRouter>

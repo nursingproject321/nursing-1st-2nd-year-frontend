@@ -66,7 +66,7 @@ export default function StudentTable({ data }) {
                                     {/* <Link to={`/hospital/${row.id}`}>{row.name}</Link> */}
                                     {/* <TableCell><Link to="/hospital_list">{row.name}</Link></TableCell> */}
                                     <TableCell>
-                                        <Link component={RouterLink} to={`/hospital_details/${row._id}`}>
+                                        <Link component={RouterLink} to={`/student/details/${row._id}`}>
                                             {row.name}
                                         </Link>
                                     </TableCell>

@@ -30,6 +30,7 @@ import { DrawerWidth, Menus } from "./utils";
 // eslint-disable-next-line import/no-unresolved
 import Details from "./HospitalList.json";
 import StudentTable from "./studentTable";
+import { EVENTS, GlobalEventEmitter } from "../../services";
 
 function cclist() {
     const { communityStore } = useStore();
@@ -200,99 +201,20 @@ function cclist() {
         fetchSchools();
     }, []);
 
+    useEffect(() => {
+        GlobalEventEmitter.emit(EVENTS.UPDATE_TOP_BAR, {
+            text: "Community List"
+        });
+    });
+
     return (
-        <Box>
-            <Drawer
-                variant="permanent"
-                sx={{
-                    width: DrawerWidth,
-                    flexShrink: 0,
-                    "& .MuiDrawer-paper": { width: DrawerWidth, boxSizing: "border-box" }
-                }}
-            >
-                <LeftMenuHeader />
-                <List>
-                    {Menus.map((menu) => {
-                        const selected = location.pathname.startsWith(`/${menu.id}`);
-                        const { Icon } = menu;
-                        return (
-                            <ListItem
-                                key={menu.id}
-                                disablePadding
-                                selected={selected}
-                                onClick={() => navigate(`/${menu.id}`)}
-                            >
-                                <ListItemButton>
-                                    <ListItemIcon>
-                                        <Icon color={selected ? "primary" : ""} />
-                                    </ListItemIcon>
-                                    <ListItemText primary={menu.name} />
-                                </ListItemButton>
-                            </ListItem>
-                        );
-                    })}
-                </List>
-            </Drawer>
-            <Box
-                sx={{
-                    width: { xs: "80%", lg: "76.5%" },
-                    margin: "1px 1px 1px 23.5%",
-                    textAlign: "center"
-                }}
-            >
-                {/* <StudentTable data={hospitalsData} /> */}
-                <StudentTable data={list} />
-
-                {/* <Table
-                    key={`${Date.now()}`}
-                    data={toJS(list)}
-                    // columns={columns}
-                    title={getToolBarActions()}
-                    options={{
-                        viewColumns: false,
-                        search: false,
-                        filter: false,
-                        count: totalCount,
-                        onRowsDelete: ({ data }) => {
-                            const indexes = data.map((obj) => obj.index);
-                            handleDeleteSelectedRows(indexes);
-                            return false;
-                        },
-                        downloadOptions: {
-                            filename: "Schools"
-                        },
-                        textLabels: {
-                            body: {
-                                noMatch: !fetched ? (
-                                    <div>
-                                        <h2>List of Available Community Clinials</h2>
-                                        <thead>
-                                            <tr className="spaceUnder">
-                                                <th scope="col" className="p-3">No. </th>
-                                                <th scope="col" className="p-3">Hospital Name</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            { hospitalsData && hospitalsData.map(({ name, id }) => (
-
-                                                <tr className="spaceUnder" key={id}>
-                                                    <td width="2%" className="pl-3">
-                                                        {id}
-                                                        {" "}
-                                                        .
-                                                    </td>
-                                                    <td width="25%" className="text-left">{name}</td>
-                                                </tr>
-
-                                            ))}
-                                        </tbody>
-                                    </div>
-                                ) : "No records found"
-                            }
-                        }
-                    }}
-                /> */}
-            </Box>
+        <Box
+            sx={{
+                margin: "10px 10px 10px 10px",
+                textAlign: "center"
+            }}
+        >
+            <StudentTable data={list} />
         </Box>
     );
 }

@@ -468,56 +468,18 @@ function HospitalRegistrationForm() {
 
     useEffect(() => {
         GlobalEventEmitter.emit(EVENTS.UPDATE_TOP_BAR, {
-            text: editObj ? (
-                <>
-                    Student -
-                    <em>
-                        {`${editObj.fname} ${editObj.lname}`}
-
-                    </em>
-                </>
-            ) : "Add New Student",
-            navigateBackTo: "/hospital_form"
+            text: "Hospital Registration Form"
         });
-    }, [editObj]);
+    });
 
     return (
-        <Box>
-            <Drawer
-                variant="permanent"
-                sx={{
-                    width: DrawerWidth,
-                    flexShrink: 0,
-                    "& .MuiDrawer-paper": { width: DrawerWidth, boxSizing: "border-box" }
-                }}
-            >
-                <LeftMenuHeader />
-                <List>
-                    {Menus.map((menu) => {
-                        const selected = location.pathname.startsWith(`/${menu.id}`);
-                        const { Icon } = menu;
-                        return (
-                            <ListItem
-                                key={menu.id}
-                                disablePadding
-                                selected={selected}
-                                onClick={() => navigate(`/${menu.id}`)}
-                            >
-                                <ListItemButton>
-                                    <ListItemIcon>
-                                        <Icon color={selected ? "primary" : ""} />
-                                    </ListItemIcon>
-                                    <ListItemText primary={menu.name} />
-                                </ListItemButton>
-                            </ListItem>
-                        );
-                    })}
-                </List>
-            </Drawer>
-            <Box sx={{ overflow: "auto", height: "calc(100vh - 60px)", px: 2 }}>
-                <h1>Hospital Registration Form</h1>
-                <HospitalFormComponent agencyType="hospital" />
-            </Box>
+
+        <Box sx={{
+            margin: "10px 5% 10px 5%",
+            textAlign: "center"
+        }}
+        >
+            <HospitalFormComponent agencyType="hospital" />
         </Box>
     );
 }

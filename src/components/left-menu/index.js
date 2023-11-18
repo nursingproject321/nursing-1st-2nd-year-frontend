@@ -41,7 +41,7 @@ export default function LeftMenu() {
                                 key={menu.id}
                                 disablePadding
                                 selected={selected}
-                                onClick={() => navigate(`/${menu.id}`)}
+                                onClick={() => navigate(`student/${menu.id}`)}
                             >
                                 <ListItemButton>
                                     <ListItemIcon>

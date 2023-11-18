@@ -78,8 +78,7 @@ function DetailsPage() {
             </Drawer>
             <Box
                 sx={{
-                    width: { xs: "80%", lg: "76.5%" },
-                    margin: "1px 1px 1px 23.5%",
+                    margin: "10px 10px 10px 10px",
                     textAlign: "center"
                 }}
             >

@@ -149,7 +149,7 @@ function LocationForm() {
         const clinicalScheduleList = ["Clinical in Fall (10 remaining)", "Clinical in Winter (0 remaining)", "Clinical in Summer (0 remaining)"];
         const hospitalList = ["Windsor-Essex", "Chatham-Kent", "Sarnia-Lambton"];
         return (
-            <Stack sx={{ width: "50%", my: 2 }} spacing={2}>
+            <Stack spacing={2}>
                 <SelectBox
                     label="At which site did you begin your nursing?"
                     ref={yearRef}
@@ -258,44 +258,21 @@ function LocationForm() {
     //         navigateBackTo: "/location_form"
     //     });
     // }, [editObj]);
+    useEffect(() => {
+        GlobalEventEmitter.emit(EVENTS.UPDATE_TOP_BAR, {
+            text: "Location Form"
+        });
+    });
 
     return (
-        <Box>
-            <Drawer
-                variant="permanent"
-                sx={{
-                    width: DrawerWidth,
-                    flexShrink: 0,
-                    "& .MuiDrawer-paper": { width: DrawerWidth, boxSizing: "border-box" }
-                }}
-            >
-                <LeftMenuHeader />
-                <List>
-                    {Menus.map((menu) => {
-                        const selected = location.pathname.startsWith(`/${menu.id}`);
-                        const { Icon } = menu;
-                        return (
-                            <ListItem
-                                key={menu.id}
-                                disablePadding
-                                selected={selected}
-                                onClick={() => navigate(`/${menu.id}`)}
-                            >
-                                <ListItemButton>
-                                    <ListItemIcon>
-                                        <Icon color={selected ? "primary" : ""} />
-                                    </ListItemIcon>
-                                    <ListItemText primary={menu.name} />
-                                </ListItemButton>
-                            </ListItem>
-                        );
-                    })}
-                </List>
-            </Drawer>
-            <Box sx={{ overflow: "auto", height: "calc(100vh - 60px)", px: 2 }}>
-                <h1>Location Form</h1>
-                {renderTabs()}
-                {/* <div>
+
+        <Box sx={{
+            margin: "10px 5% 10px 5%",
+            textAlign: "center"
+        }}
+        >
+            {renderTabs()}
+            {/* <div>
                     <label htmlFor="text-field">Text Field:</label>
                     <input
                         type="text"
@@ -306,7 +283,6 @@ function LocationForm() {
                         {isTextFieldDisabled ? "Enable" : "Disable"}
                     </button>
                 </div> */}
-            </Box>
         </Box>
     );
 }

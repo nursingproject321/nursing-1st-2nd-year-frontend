@@ -35,6 +35,9 @@ import Topbar from "../topbar";
 import LeftMenuHeader from "./header";
 import { DrawerWidth, Menus } from "./utils";
 import StudentTable from "./studentTable";
+import LeftMenu from "../left-menu";
+import { EVENTS, GlobalEventEmitter } from "../../services";
+
 // eslint-disable-next-line import/no-unresolved
 
 function HospitalList() {
@@ -214,53 +217,23 @@ function HospitalList() {
         fetchHosptials();
     }, []);
 
-    console.log("Length", totalCount, "Hospital List: ", list);
-    console.log("List ", typeof list, " hospitalsData", typeof hospitalsData);
+    useEffect(() => {
+        GlobalEventEmitter.emit(EVENTS.UPDATE_TOP_BAR, {
+            text: "Hospital List"
+        });
+    });
 
     return (
-        <Box>
-            <Drawer
-                variant="permanent"
-                sx={{
-                    width: DrawerWidth,
-                    flexShrink: 0,
-                    "& .MuiDrawer-paper": { width: DrawerWidth, boxSizing: "border-box" }
-                }}
-            >
-                <LeftMenuHeader />
-                <List>
-                    {Menus.map((menu) => {
-                        const selected = location.pathname.startsWith(`/${menu.id}`);
-                        const { Icon } = menu;
-                        return (
-                            <ListItem
-                                key={menu.id}
-                                disablePadding
-                                selected={selected}
-                                onClick={() => navigate(`/${menu.id}`)}
-                            >
-                                <ListItemButton>
-                                    <ListItemIcon>
-                                        <Icon color={selected ? "primary" : ""} />
-                                    </ListItemIcon>
-                                    <ListItemText primary={menu.name} />
-                                </ListItemButton>
-                            </ListItem>
-                        );
-                    })}
-                </List>
-            </Drawer>
-            <Box
-                sx={{
-                    width: { xs: "80%", lg: "76.5%" },
-                    margin: "1px 1px 1px 23.5%",
-                    textAlign: "center"
-                }}
-            >
-                {/* <StudentTable data={hospitalsData} /> */}
-                <StudentTable data={list} />
+        <Box
+            sx={{
+                margin: "10px 10px 10px 10px",
+                textAlign: "center"
+            }}
+        >
+            {/* <StudentTable data={hospitalsData} /> */}
+            <StudentTable data={list} />
 
-                {/* <Table
+            {/* <Table
                     key={`${Date.now()}`}
                     data={toJS(list)}
                     // columns={columns}
@@ -309,7 +282,6 @@ function HospitalList() {
                         }
                     }}
                 /> */}
-            </Box>
         </Box>
     );
 }
