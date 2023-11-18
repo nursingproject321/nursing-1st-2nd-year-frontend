@@ -210,6 +210,22 @@ export default function Login() {
         );
     }
 
+    // const { user } = userData;
+    // if (user) {
+    //     console.log("Logged In");
+    //     navigate("/student");
+    // } else {
+    //     console.log("Not Logged In");
+    // }
+
+    useEffect(() => {
+        const { user } = userData;
+
+        if (user) {
+            navigate("/student");
+        }
+    }, []);
+
     return (
         <Box sx={{ overflow: "auto" }}>
             {renderTopBar()}

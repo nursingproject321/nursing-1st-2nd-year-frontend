@@ -5,6 +5,7 @@ import SchoolIcon from "@mui/icons-material/School";
 import PersonIcon from "@mui/icons-material/Person";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import PersonPinIcon from "@mui/icons-material/PersonPin";
+import HowToRegIcon from "@mui/icons-material/HowToReg";
 
 export const DrawerWidth = 300;
 
@@ -33,6 +34,11 @@ export const Menus = [
         id: "cc-register",
         name: "Community Registration Form",
         Icon: LocationOnIcon
+    },
+    {
+        id: "registered-agencies",
+        name: "Registered Agencies",
+        Icon: HowToRegIcon
     }
 ];
 

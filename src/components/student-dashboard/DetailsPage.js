@@ -35,7 +35,7 @@ function DetailsPage() {
                 <div>
                     Error fetching data:
                     {" "}
-                    {error}
+                    {error.response.data.message}
                 </div>
             ));
     }, [id]);
