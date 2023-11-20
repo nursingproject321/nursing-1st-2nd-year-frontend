@@ -475,8 +475,7 @@ function HospitalRegistrationForm() {
     return (
 
         <Box sx={{
-            margin: "10px 5% 10px 5%",
-            textAlign: "center"
+            margin: "10px 5% 10px 5%"
         }}
         >
             <HospitalFormComponent agencyType="hospital" />

@@ -40,7 +40,6 @@ function RequireAuth() {
     // trying to go to when they were redirected. This allows us to send them
     // along to that page after they login, which is a nicer user experience
     // than dropping them off on the home page.
-    console.log("Not Authorised");
     return <Navigate to="/login" state={{ from: location }} />;
 }
 
@@ -79,6 +78,9 @@ export default function AppRoutes() {
                     <Route path="registered-agencies" element={<RegisteredAgencies />} />
                     <Route path="details/:id" element={<DetailsPage />} />
                     {/* <Route path="*" element={<Navigate to="/students" replace />} /> */}
+                </Route>
+                <Route path="/admin" element={<Outlet />}>
+                    <Route path="" element={<Navigate to="/admin/student-list" />} />
                 </Route>
             </Route>
             <Route path="*" element={<Navigate to="/login" replace />} />

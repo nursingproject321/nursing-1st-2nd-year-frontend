@@ -3,6 +3,7 @@ import {
     FormControl, InputLabel, Select, MenuItem, TextField, Button, Grid
 } from "@mui/material";
 import axios from "axios";
+import ShowSnackbarAlert from "../common/SnackBarAlert";
 
 function HospitalFormComponent({ agencyType }) {
     const [placementType, setPlacementType] = useState("");
@@ -13,7 +14,7 @@ function HospitalFormComponent({ agencyType }) {
 
     // Fetch placement types from the API endpoint
     useEffect(() => {
-        axios.post("http://localhost:8000/student/placementTypes", {
+        axios.post("student/placementTypes", {
             agency_type: agencyType
         })
             .then((response) => setPlacementTypes(response.data.placement_types))
@@ -23,7 +24,7 @@ function HospitalFormComponent({ agencyType }) {
     // Fetch agency names based on the selected placement type
     useEffect(() => {
         if (placementType) {
-            axios.post("http://localhost:8000/student/agencyNames", {
+            axios.post("student/agencyNames", {
                 agency_type: agencyType,
                 placement_type: placementType
             })
@@ -37,8 +38,15 @@ function HospitalFormComponent({ agencyType }) {
         setAgencyName("");
     };
 
-    const handleSubmit = () => {
-    // Submit the form data to the API
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        // Submit the form data to the API
+        // const body = {
+        //     agency_name: agencyName,
+        //     placement_type: placementType,
+        //     notes
+        // };
+        // console.log("body: ", body);
         axios.post(`/student/${agencyType}/`, {
             agency_name: agencyName,
             placement_type: placementType,
@@ -46,9 +54,12 @@ function HospitalFormComponent({ agencyType }) {
         })
             .then((response) => {
                 console.log(response.data.message);
-                // Handle success, e.g., show a success message to the user
+                ShowSnackbarAlert({ message: response.data.message });
             })
-            .catch((error) => console.error(error.response.data.message));
+            .catch((error) => {
+                console.error(error.response.data.message);
+                ShowSnackbarAlert({ message: error.response.data.message, severity: "error" });
+            });
     };
 
     return (

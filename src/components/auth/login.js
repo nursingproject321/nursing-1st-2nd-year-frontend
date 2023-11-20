@@ -98,7 +98,7 @@ export default function Login() {
     //     sendLoginReq("student");
     // };
 
-    const handleLogin = async () => {
+    const handleLogin = async (userType) => {
         try { // Perform login logic
             const username = usernameRef.current.value();
             const password = passwordRef.current.value();
@@ -118,9 +118,9 @@ export default function Login() {
                 }
             );
             const { user } = res.data;
-
             setUserData({ user, fetched: true });
-            navigate("/student");
+            const route = userType === "admin" ? "/admin" : "/student";
+            navigate(route);
         } catch (err) {
             //         // console.error(err);
             ShowSnackbarAlert({ message: err.response.data.message, severity: "error" });
@@ -173,7 +173,7 @@ export default function Login() {
                 ref={btnRef}
                 label="Admin Login"
                 // onClick={handleSubmit}
-                onClick={handleLogin}
+                onClick={handleLogin("admin")}
                 sx={{ mt: 3, width: 150 }}
             />
         );
@@ -185,7 +185,7 @@ export default function Login() {
                 ref={btnRef}
                 label="Student Login"
                 // onClick={handleStudentSubmit}
-                onClick={handleLogin}
+                onClick={handleLogin("student")}
                 sx={{ mt: 3, width: 150, ml: 3 }}
             />
         );
@@ -218,13 +218,13 @@ export default function Login() {
     //     console.log("Not Logged In");
     // }
 
-    useEffect(() => {
-        const { user } = userData;
+    // useEffect(() => {
+    //     const { user } = userData;
 
-        if (user) {
-            navigate("/student");
-        }
-    }, []);
+    //     if (user) {
+    //         navigate("/student");
+    //     }
+    // }, []);
 
     return (
         <Box sx={{ overflow: "auto" }}>
