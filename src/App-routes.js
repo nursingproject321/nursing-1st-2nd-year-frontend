@@ -79,9 +79,6 @@ export default function AppRoutes() {
                     <Route path="details/:id" element={<DetailsPage />} />
                     {/* <Route path="*" element={<Navigate to="/students" replace />} /> */}
                 </Route>
-                <Route path="/admin" element={<Outlet />}>
-                    <Route path="" element={<Navigate to="/admin/student-list" />} />
-                </Route>
             </Route>
             <Route path="*" element={<Navigate to="/login" replace />} />
         </Routes>
