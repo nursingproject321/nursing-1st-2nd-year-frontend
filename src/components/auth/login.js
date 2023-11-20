@@ -119,11 +119,21 @@ export default function Login() {
             );
             const { user } = res.data;
             setUserData({ user, fetched: true });
-            navigate("/student");
+            const route = userType === "admin" ? "/admin" : "/student";
+            navigate(route);
+            // navigate("/student");
         } catch (err) {
-            //         // console.error(err);
+            console.error(err);
             ShowSnackbarAlert({ message: err.response.data.message, severity: "error" });
         }
+    };
+
+    const handleAdminLogin = () => {
+        handleLogin("admin");
+    };
+
+    const handleStudentLogin = () => {
+        handleLogin("student");
     };
 
     function renderUsername() {
@@ -172,7 +182,7 @@ export default function Login() {
                 ref={btnRef}
                 label="Admin Login"
                 // onClick={handleSubmit}
-                onClick={handleLogin}
+                onClick={handleAdminLogin}
                 sx={{ mt: 3, width: 150 }}
             />
         );
@@ -184,7 +194,7 @@ export default function Login() {
                 ref={btnRef}
                 label="Student Login"
                 // onClick={handleStudentSubmit}
-                onClick={handleLogin}
+                onClick={handleStudentLogin}
                 sx={{ mt: 3, width: 150, ml: 3 }}
             />
         );
