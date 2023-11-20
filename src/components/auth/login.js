@@ -227,13 +227,14 @@ export default function Login() {
     //     console.log("Not Logged In");
     // }
 
-    // useEffect(() => {
-    //     const { user } = userData;
+    useEffect(() => {
+        const { user } = userData;
 
-    //     if (user) {
-    //         navigate("/student");
-    //     }
-    // }, []);
+        if (user) {
+            const userType = user.type;
+            navigate(`/${userType}`);
+        }
+    }, []);
 
     return (
         <Box sx={{ overflow: "auto" }}>

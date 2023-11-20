@@ -7,7 +7,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Box from "@mui/system/Box";
 import { useLocation, useNavigate } from "react-router-dom";
-import { DrawerWidth, Menus } from "./utils";
+import { DrawerWidth, getMenus } from "./utils";
 import { UserContext } from "../../services";
 import LeftMenuHeader from "./header";
 
@@ -20,6 +20,9 @@ export default function LeftMenu() {
     if (!userData.user) {
         return "";
     }
+
+    const userType = userData.user.type;
+    const Menus = getMenus(userType);
 
     return (
         <Drawer
@@ -41,7 +44,7 @@ export default function LeftMenu() {
                                 key={menu.id}
                                 disablePadding
                                 selected={selected}
-                                onClick={() => navigate(`student/${menu.id}`)}
+                                onClick={() => navigate(`${userType}/${menu.id}`)}
                             >
                                 <ListItemButton>
                                     <ListItemIcon>

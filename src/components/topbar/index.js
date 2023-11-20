@@ -13,7 +13,7 @@ import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import LoadingButton from "../common/LoadingButton";
-import { Menus } from "../left-menu/utils";
+import { getMenus } from "../left-menu/utils";
 import ShowSnackbarAlert from "../common/SnackBarAlert";
 import { setAuthTokenToLocalStorage } from "../../axios";
 import { EVENTS, GlobalEventEmitter, UserContext } from "../../services";
@@ -37,7 +37,9 @@ export default function Topbar() {
     };
 
     const updateHeader = useCallback(() => {
-        if (location) {
+        if (location && userData.user) {
+            const userType = userData.user.type;
+            const Menus = getMenus(userType);
             const currentMenu = Menus.find((menu) => location.pathname.startsWith(`/${menu.id}`));
             setHeaderText(currentMenu?.name || "");
             setNavigateBackTo(null);
