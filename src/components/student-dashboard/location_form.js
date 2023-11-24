@@ -23,6 +23,7 @@ import { toJS } from "mobx";
 import UploadIcon from "@mui/icons-material/Upload";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
+import Divider from "@mui/material/Divider";
 import SkeletonLoader from "../common/SkeletonLoader";
 import LoadingButton from "../common/LoadingButton";
 import SelectBox from "../common/SelectBox";
@@ -44,26 +45,12 @@ import TabPanel from "../common/TabPanel";
 import StudentPlacementHistory from "../students/student-placement-history";
 
 function LocationForm() {
-    const [isTextFieldDisabled, setIsTextFieldDisabled] = useState(true);
-    const { studentStore, schoolStore } = useStore();
-    const [editObj, setEditObj] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [selectedTab, setSelectedTab] = useState(0);
-    const { id: editId } = useParams();
-    // const { schoolStore } = useStore();
-    const uploadFileRef = useRef(null);
+    const [clinicalScheduleList, setClinicalScheduleList] = useState([]);
+    const [loadingClinicalSchedule, setLoadingClinicalSchedule] = useState(true);
     const navigate = useNavigate();
-    const location = useLocation();
-    const fnameRef = useRef(null);
-    const lnameRef = useRef(null);
-    const studentIdRef = useRef(null);
-    const emailRef = useRef(null);
-    // const phoneNumberRef = useRef(null);
-    // const schoolRef = useRef(null);
-    const yearRef = useRef(null);
-    const termRef = useRef(null);
-    const notesRef = useRef(null);
 
+<<<<<<< Updated upstream
     const { list, totalCount, fetched } = schoolStore;
 
     const handleAddClick = useCallback(() => {
@@ -159,6 +146,14 @@ function LocationForm() {
     const goBack = useCallback(() => {
         navigate("/students");
     }, []);
+=======
+    const beginSiteRef = useRef(null);
+    const completeSiteRef = useRef(null);
+    const semSeqRef = useRef(null);
+    const hospitalRef = useRef(null);
+    const communityRef = useRef(null);
+
+>>>>>>> Stashed changes
     const validate = useCallback((value, el, errMsg) => {
         let err = null;
 
@@ -169,20 +164,74 @@ function LocationForm() {
         el.setError(err);
         return err === null;
     }, []);
-    const validateEmailAddress = useCallback(() => {
-        const value = emailRef.current.value();
-        let err = null;
 
-        if (!value) {
-            err = "Please enter the email";
-        } else if (!isValidEmailAddress(value)) {
-            err = "Invalid email address";
+    const getClinicalScheduleList = async () => {
+        try {
+            const response = await axios.post("/clinicalplan/getsemoptions");
+            setClinicalScheduleList(response.data.data);
+        } catch (error) {
+            // Handle error, show error message or log the error
+            console.error("Error fetching clinical schedule options:", error);
+            ShowSnackbarAlert({ message: error.response.data.message, severity: "error" });
+        } finally {
+            setLoadingClinicalSchedule(false);
         }
+    };
 
-        emailRef.current.setError(err);
-        return err === null;
+    // const handleSubmit = useCallback(async () => {
+    //     const fname = fnameRef.current.value();
+    //     const lname = lnameRef.current.value();
+    //     const studentId = studentIdRef.current.value();
+    //     const email = emailRef.current.value();
+    //     // const phoneNumber = phoneNumberRef.current.value();
+    //     // const school = schoolRef.current.getSelectedValue();
+    //     const year = yearRef.current.getSelectedValue();
+    //     const term = termRef.current.getSelectedValue();
+    //     const notes = notesRef.current.value();
+
+    //     const isFNameValid = validate(fname, fnameRef.current, "Please enter the First name");
+    //     const isLNameValid = validate(lname, lnameRef.current, "Please enter the Last name");
+    //     const isStudentIdValid = validate(studentId, studentIdRef.current, "Please enter the Student ID");
+    //     const isEmailValid = validateEmailAddress();
+    //     // const isPhoneValid = validate(phoneNumber, phoneNumberRef.current, "Please enter the phone number");
+    //     // const isSchoolValid = validate(school, schoolRef.current, "Please select the school");
+    //     const isYearValid = validate(year, yearRef.current, "Please select the year");
+    //     const isTermValid = validate(term, termRef.current, "Please select the term");
+
+    //     if (!isFNameValid || !isLNameValid || !isStudentIdValid || !isEmailValid || !isYearValid || !isTermValid) {
+    //         return;
+    //     }
+
+    //     const params = {
+    //         fname, lname, studentId, email, year, term, notes
+    //     };
+    //     try {
+    //         if (editObj) {
+    //             await studentStore.edit(editObj._id, params);
+    //             ShowSnackbarAlert({
+    //                 message: "Saved successfully"
+    //             });
+    //         } else {
+    //             await studentStore.addNew(params);
+    //             ShowSnackbarAlert({
+    //                 message: "Added successfully"
+    //             });
+    //         }
+
+    //         goBack();
+    //     } catch (err) {
+    //         ShowSnackbarAlert({
+    //             message: err.response?.data?.message || err.message,
+    //             severity: "error"
+    //         });
+    //     }
+    // }, [editObj]);
+
+    useEffect(() => {
+        getClinicalScheduleList();
     }, []);
 
+<<<<<<< Updated upstream
     const getToolBarActions = useCallback(() => (
         <Box
             sx={{
@@ -385,11 +434,30 @@ function LocationForm() {
                 <SelectBox
                     label="Select Year"
                     ref={yearRef}
+=======
+    function renderContent() {
+        const nursingList = ["University of Windsor", "St. Clair College Windsor", "St. Clair College Chatham", "Lambton College Sarnia"];
+        // const staticClinicalScheduleList = ["Clinical in Fall (10 remaining)", "Clinical in Winter (0 remaining)", "Clinical in Summer (0 remaining)"];
+        const dynamicClinicalScheduleList = clinicalScheduleList.map((item) => ({
+            label: `${item.field} (${item.seats - item.seats_filled} remaining)`,
+            value: item.field
+        }));
+        console.log("clinicalScheduleList: ", clinicalScheduleList);
+        console.log("dynamicClinicalScheduleList: ", dynamicClinicalScheduleList);
+
+        const hospitalList = ["Windsor-Essex", "Chatham-Kent", "Sarnia-Lambton"];
+        return (
+            <Stack spacing={2} sx={{ marginTop: 2, marginBottom: 2 }}>
+                <SelectBox
+                    label="At which site did you begin your nursing?"
+                    ref={beginSiteRef}
+>>>>>>> Stashed changes
                     required
                     selected={editObj?.year || ""}
                     options={getYearsList()}
                 />
                 <SelectBox
+<<<<<<< Updated upstream
                     label="Select Term"
                     ref={termRef}
                     selected={editObj?.term || ""}
@@ -402,6 +470,38 @@ function LocationForm() {
                     value={editObj?.notes || ""}
                     multiline
                     rows={4}
+=======
+                    label="At which site will you be completing your final term of the nursing program?"
+                    ref={completeSiteRef}
+                    selected=""
+                    options={nursingList}
+                    required
+                />
+                <Divider />
+                <SelectBox
+                    label="Please select the semester sequence for your clinical schedule"
+                    ref={semSeqRef}
+                    selected=""
+                    options={dynamicClinicalScheduleList}
+                    loading={loadingClinicalSchedule}
+                    style={{ fontSize: "16px" }}
+                    required
+
+                />
+                <SelectBox
+                    label="Preferred placement location for Hospital Clinical"
+                    ref={hospitalRef}
+                    selected=""
+                    options={hospitalList}
+                    required
+                />
+                <SelectBox
+                    label="Preferred placement location for Community Clinical"
+                    ref={communityRef}
+                    selected=""
+                    options={hospitalList}
+                    required
+>>>>>>> Stashed changes
                 />
             </Stack>
         );
@@ -411,12 +511,12 @@ function LocationForm() {
         return (
             <Box sx={{ mb: 2 }}>
                 <LoadingButton
-                    label={editObj ? "Save" : "Submit"}
-                    onClick={handleSubmit}
+                    label="Submit"
+                    // onClick={handleSubmit}
                     sx={{ mr: 1 }}
                 />
                 <Button
-                    onClick={goBack}
+                    // onClick={clearFields}
                     color="grey"
                     variant="outlined"
                 >
@@ -427,37 +527,11 @@ function LocationForm() {
     }
 
     function renderTabs() {
-        if (!editObj) {
-            return (
-                <>
-                    {renderContent()}
-                    {renderActions()}
-                </>
-            );
-        }
-
         return (
-            <Box sx={{ mt: 1 }}>
-                <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-                    <Tabs
-                        value={selectedTab}
-                        onChange={handleTabChange}
-                    >
-                        <Tab label="Details" />
-                        <Tab label="Placement History" />
-                    </Tabs>
-                </Box>
-                <TabPanel value={selectedTab} index={0}>
-                    {renderContent()}
-                    {renderActions()}
-                </TabPanel>
-                <TabPanel value={selectedTab} index={1}>
-                    <StudentPlacementHistory
-                        placementsHistory={editObj.placementsHistory}
-                        placementLocationsHistory={editObj.placementLocationsHistory}
-                    />
-                </TabPanel>
-            </Box>
+            <>
+                {renderContent()}
+                {renderActions()}
+            </>
         );
     }
 
