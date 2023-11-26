@@ -21,13 +21,13 @@ import StudentDashboard from "./components/student-dashboard";
 import CCList from "./components/student-dashboard/cclist";
 import HospitalList from "./components/student-dashboard/HospitalList";
 import DetailsPage from "./components/student-dashboard/DetailsPage";
-import LocationForm from "./components/student-dashboard/location_form";
 import HospitalRegistrationForm from "./components/student-dashboard/hospital_registration";
 import AdminDashboard from "./components/admin-dashboard";
 import CCRegistrationForm from "./components/student-dashboard/cc_registration";
 import CommunityList from "./components/admin-dashboard/community_list";
 import RegisteredAgencies from "./components/student-dashboard/RegisteredAgencies";
 import AdminHospitalList from "./components/admin-dashboard/AdminHospitalList";
+import ClinicalPlan from "./components/student-dashboard/ClinicalPlan";
 
 function RequireAuth() {
     const { userData } = useContext(UserContext);
@@ -73,7 +73,8 @@ export default function AppRoutes() {
                     <Route path="" element={<Navigate to="/student/hospital-list" />} />
                     <Route path="hospital-list" element={<HospitalList />} />
                     <Route path="cc-list" element={<CCList />} />
-                    <Route path="location-form" element={<LocationForm />} />
+                    {/* <Route path="location-form" element={<LocationForm />} /> */}
+                    <Route path="location-form" element={<ClinicalPlan />} />
                     <Route path="hospital-register" element={<HospitalRegistrationForm />} />
                     <Route path="cc-register" element={<CCRegistrationForm />} />
                     <Route path="registered-agencies" element={<RegisteredAgencies />} />

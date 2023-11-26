@@ -38,28 +38,28 @@ function HospitalFormComponent({ agencyType }) {
         setAgencyName("");
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        // Submit the form data to the API
-        // const body = {
-        //     agency_name: agencyName,
-        //     placement_type: placementType,
-        //     notes
-        // };
-        // console.log("body: ", body);
-        axios.post(`/student/${agencyType}/`, {
-            agency_name: agencyName,
-            placement_type: placementType,
-            notes
-        })
-            .then((response) => {
-                console.log(response.data.message);
-                ShowSnackbarAlert({ message: response.data.message });
-            })
-            .catch((error) => {
-                console.error(error.response.data.message);
-                ShowSnackbarAlert({ message: error.response.data.message, severity: "error" });
-            });
+
+        try {
+            // Prepare the request body
+            const requestBody = {
+                agency_name: agencyName,
+                placement_type: placementType,
+                notes
+            };
+
+            // Make the asynchronous request using async/await
+            const response = await axios.post(`/student/${agencyType}/`, requestBody);
+
+            // Handle the successful response
+            console.log(response.data.message);
+            ShowSnackbarAlert({ message: response.data.message });
+        } catch (error) {
+            // Handle errors
+            console.error(error.response.data.message);
+            ShowSnackbarAlert({ message: error.response.data.message, severity: "error" });
+        }
     };
 
     return (
