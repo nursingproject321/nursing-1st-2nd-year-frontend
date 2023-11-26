@@ -112,6 +112,11 @@ export const getMenus = (userType) => {
             id: "student-placements",
             name: "Student Placements",
             Icon: HowToRegIcon
+        },
+        {
+            id: "registration-toggle",
+            name: "Turn Registartion On/Off",
+            Icon: HowToRegIcon
         }
     ];
 };
