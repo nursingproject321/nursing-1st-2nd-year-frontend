@@ -303,17 +303,19 @@ const PlacementStudentsTable = forwardRef(({ data = {} }, ref) => {
                 customBodyRender: (value, tableMeta) => {
                     if (data.status === "created") {
                         return (
-                            <TextField
-                                variant="standard"
-                                required
-                                multiline
-                                onChange={handleNotesChange(tableMeta.currentTableData[tableMeta.rowIndex]?.data[1] || "")}
-                                value={value}
-                            />
+                            <div title={value} style={{ maxWidth: "100px", overflow: "hidden" }}>
+                                <TextField
+                                    variant="standard"
+                                    required
+                                    multiline
+                                    onChange={handleNotesChange(tableMeta.currentTableData[tableMeta.rowIndex]?.data[1] || "")}
+                                    value={value}
+                                />
+                            </div>
                         );
                     }
 
-                    return value;
+                    return <div title={value} style={{ maxWidth: "100px", overflow: "hidden" }}>{value}</div>;
                 }
             }
         }
