@@ -80,9 +80,30 @@ function LocationForm() {
         }
     };
 
-    const handleSubmit = useCallback(async (event) => {
-        event.preventDefault();
-    });
+    const handleSubmit = useCallback(async () => {
+        // event.preventDefault();
+
+        const beginSite = beginSiteRef.current.value();
+        const completeSite = completeSiteRef.current.value();
+        const semSeq = semSeqRef.current.value();
+        const hospital = hospitalRef.current.value();
+        const community = communityRef.current.value();
+
+        console.log("semSeq: ", semSeq);
+
+        try {
+            const response = await axios.post("/clinicalplan/register", {
+                begin_nursing_site: beginSite,
+                completing_nursing_site: completeSite,
+                semester_sequence: semSeq,
+                preffered_hospital_location: hospital,
+                preffered_community_location: community
+            });
+            ShowSnackbarAlert({ message: response.data.message });
+        } catch (error) {
+            ShowSnackbarAlert({ message: error.response.data.message, severity: "error" });
+        }
+    }, []);
 
     // const handleSubmit = useCallback(async () => {
     //     const fname = fnameRef.current.value();
@@ -198,7 +219,7 @@ function LocationForm() {
             <Box sx={{ mb: 2 }}>
                 <LoadingButton
                     label="Submit"
-                    // onClick={handleSubmit}
+                    onClick={handleSubmit}
                     sx={{ mr: 1 }}
                 />
                 <Button
@@ -223,8 +244,7 @@ function LocationForm() {
 
     useEffect(() => {
         GlobalEventEmitter.emit(EVENTS.UPDATE_TOP_BAR, {
-            text: "Location Form",
-            navigateBackTo: "/location_form"
+            text: "Location Form"
         });
     }, []);
 
