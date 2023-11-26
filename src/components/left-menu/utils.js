@@ -6,6 +6,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import PersonPinIcon from "@mui/icons-material/PersonPin";
 import HowToRegIcon from "@mui/icons-material/HowToReg";
+import ToggleOnIcon from "@mui/icons-material/ToggleOn";
 
 export const DrawerWidth = 300;
 
@@ -112,6 +113,11 @@ export const getMenus = (userType) => {
             id: "student-placements",
             name: "Student Placements",
             Icon: HowToRegIcon
+        },
+        {
+            id: "registration-toggle",
+            name: "Turn Registartion On/Off",
+            Icon: ToggleOnIcon
         }
     ];
 };
