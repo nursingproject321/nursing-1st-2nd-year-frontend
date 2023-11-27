@@ -48,28 +48,25 @@ function RequireAuth() {
 
 export default function AppRoutes() {
     const { userData } = useContext(UserContext);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [userType, setUserType] = useState("");
 
-    useEffect(() => {
-        const { user } = userData;
-
-        if (user) {
-            setIsLoggedIn(true);
-            setUserType(user.type);
-        }
-    }, []);
+    // useEffect(() => {
+    //     const { user } = userData;
+    //     if (user) {
+    //         setUserType(user.type);
+    //     }
+    // }, []);
 
     let redirectTarget;
-    if (isLoggedIn) {
-        redirectTarget = userType === "student" ? "/student" : "/admin";
+    console.log("UserData in App.js: ", userData);
+    if (userData.user) {
+        redirectTarget = userData.user.type === "student" ? "/student" : "/admin";
     } else {
         redirectTarget = "/login";
     }
 
     return (
         <Routes>
-            <Route path="/login" element={isLoggedIn ? <Navigate to={redirectTarget} replace /> : <Login />} />
+            <Route path="/login" element={userData.user ? <Navigate to={redirectTarget} replace /> : <Login />} />
             <Route element={<RequireAuth />}>
                 <Route path="/student" element={<Outlet />}>
                     <Route path="" element={<Navigate to="/student/hospital-list" />} />

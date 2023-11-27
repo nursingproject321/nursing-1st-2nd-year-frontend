@@ -25,78 +25,9 @@ export default function Login() {
     const { userData, setUserData } = useContext(UserContext);
     const navigate = useNavigate();
 
-    // const [loginResponse, setLoginResponse] = useState(null);
-    // const [agencyResponse, setAgencyResponse] = useState(null);
-
     const usernameRef = useRef(null);
     const passwordRef = useRef(null);
     const btnRef = useRef(null);
-
-    // const validate = useCallback((email, password) => {
-    //     usernameRef.current.setError(email ? null : "Please enter the username");
-    //     passwordRef.current.setError(password ? null : "Please enter the password");
-    //     return email && password;
-    // }, []);
-
-    // const handleTempSubmit = async () => {
-    //     // sendLoginRequest();
-    //     const username = "alex@uwindsor.ca";
-    //     const password = "alex";
-    //     const response = await axios.post(
-    //         "/user/login",
-    //         {
-    //             username,
-    //             password
-    //         }
-    //     );
-    //     navigate("/studentdashboard");
-    // };
-
-    // const handleKeyDown = useCallback((event) => {
-    //     if (event.key === "Enter") {
-    //         btnRef.current.click();
-    //     }
-    // });
-
-    // const sendLoginReq = async (userType) => {
-    //     try {
-    //         const username = usernameRef.current.value();
-    //         const password = passwordRef.current.value();
-    //         // console.log(username, password);
-    //         const isUsernameValid = ValidateUtils.validateUsername(username, usernameRef.current);
-    //         // const isPasswordValid = ValidateUtils.validatePassword(password, passwordRef.current);
-    //         // if (!isUsernameValid || !isPasswordValid) {
-    //         if (!isUsernameValid) {
-    //             throw new Error();
-    //         }
-    //         const res = await axios.post(
-    //             "/user/login",
-    //             {
-    //                 username,
-    //                 password,
-    //                 user_type: userType
-    //             }
-    //         );
-    //         console.log("res", res);
-    //         const { user } = res.data;
-    //         // console.log("norm ", user);
-    //         // console.log("stringfy ", JSON.stringify(user));
-    //         localStorage.setItem("userdata", JSON.stringify(user));
-    //         setUserData({ user, fetched: true });
-    //         ShowSnackbarAlert({ message: "Logged in successfully" });
-    //     } catch (err) {
-    //         // console.error(err);
-    //         ShowSnackbarAlert({ message: err.response.data.message, severity: "error" });
-    //     }
-    // };
-
-    // const handleStudentLogin = () => {
-    //     sendLoginReq("student");
-    // };
-
-    // const handleAdminLogin = async () => {
-    //     sendLoginReq("student");
-    // };
 
     const handleLogin = async (userType) => {
         try { // Perform login logic

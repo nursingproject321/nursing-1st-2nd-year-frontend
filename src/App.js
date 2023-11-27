@@ -11,6 +11,7 @@ import axios from "axios";
 import Topbar from "./components/topbar";
 import LeftMenu from "./components/left-menu";
 import AppRoutes from "./App-routes";
+import ShowSnackbarAlert from "./components/common/SnackBarAlert";
 import { UserContextProvider } from "./services";
 import { Theme } from "./theme";
 import {
@@ -34,20 +35,30 @@ export default function App() {
     //     };
     // }, []);
 
-    // const checkIfUserLoggedIn = useCallback(async () => {
-    //     const user = JSON.parse(localStorage.getItem("userdata"));
-    //     console.log("user set:", user);
-    //     if (user) {
-    //         setUserData({
-    //             user,
-    //             fetched: true
-    //         });
-    //     }
-    // }, []);
+    const checkIfUserLoggedIn = useCallback(async () => {
+        try {
+            const res = await axios.post("/user/details");
+            if (res.data.loggedin) {
+                const { user } = res.data;
+                setUserData({ user, fetched: true });
+            }
+        } catch (error) {
+            console.log("Error Fetching user details");
+            ShowSnackbarAlert({ message: error.response.data.message, severity: "error" });
+        }
+        // const user = JSON.parse(localStorage.getItem("userdata"));
+        // console.log("user set:", user);
+        // if (user) {
+        //     setUserData({
+        //         user,
+        //         fetched: true
+        //     });
+        // }
+    }, []);
 
-    // useEffect(() => {
-    //     checkIfUserLoggedIn();
-    // }, []);
+    useEffect(() => {
+        checkIfUserLoggedIn();
+    }, []);
 
     function renderContent() {
         return (

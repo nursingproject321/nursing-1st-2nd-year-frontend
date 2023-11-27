@@ -17,6 +17,8 @@ export default function LeftMenu() {
 
     const { userData } = useContext(UserContext);
 
+    console.log("UserData in leftmenu: ", userData);
+
     if (!userData.user) {
         return "";
     }
