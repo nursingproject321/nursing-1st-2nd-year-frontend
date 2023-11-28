@@ -1,12 +1,12 @@
-import HomeIcon from "@mui/icons-material/Home";
-import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
+import PeopleIcon from "@mui/icons-material/People";
+import HowToRegIcon from "@mui/icons-material/HowToReg";
+import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import SchoolIcon from "@mui/icons-material/School";
 import PersonIcon from "@mui/icons-material/Person";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import PersonPinIcon from "@mui/icons-material/PersonPin";
-import HowToRegIcon from "@mui/icons-material/HowToReg";
 import ToggleOnIcon from "@mui/icons-material/ToggleOn";
+import PageviewIcon from "@mui/icons-material/Pageview";
 
 export const DrawerWidth = 300;
 
@@ -48,32 +48,37 @@ export const getMenus = (userType) => {
         return [
             {
                 id: "hospital-list",
-                name: "List of available agencies - Hospital",
-                Icon: PeopleAltIcon
-            },
-            {
-                id: "cc-list",
-                name: "List of available agencies - Community Clinical",
+                name: "Hospital Agencies",
                 Icon: LocalHospitalIcon
             },
             {
-                id: "location-form",
-                name: "Clinical plan",
-                Icon: SchoolIcon
+                id: "cc-list",
+                name: "Community Clinical Agencies",
+                Icon: PeopleIcon
             },
             {
                 id: "hospital-register",
-                name: "Hospital Registration Form",
-                Icon: PersonIcon
+                name: "Hospital Registration",
+                Icon: LocalHospitalIcon
             },
             {
                 id: "cc-register",
-                name: "Community Registration Form",
-                Icon: LocationOnIcon
+                name: "Community Registration",
+                Icon: PeopleIcon
             },
             {
                 id: "registered-agencies",
                 name: "Registered Agencies",
+                Icon: HowToRegIcon
+            },
+            {
+                id: "location-form",
+                name: "Clinical plan",
+                Icon: PageviewIcon
+            },
+            {
+                id: "registered-clinical-plan",
+                name: "Registered Clinical plan",
                 Icon: HowToRegIcon
             }
         ];
@@ -105,7 +110,7 @@ export const getMenus = (userType) => {
             Icon: PersonIcon
         },
         {
-            id: "cc-placements",
+            id: "community-placements",
             name: "Community Placements",
             Icon: LocationOnIcon
         },
@@ -116,7 +121,7 @@ export const getMenus = (userType) => {
         },
         {
             id: "registration-toggle",
-            name: "Turn Registartion On/Off",
+            name: "Turn Registration On/Off",
             Icon: ToggleOnIcon
         }
     ];

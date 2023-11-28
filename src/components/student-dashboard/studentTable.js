@@ -11,8 +11,6 @@ import {
     TextField,
     Link
 } from "@mui/material";
-// import { Link } from "react-router-dom";
-// import { Link } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 
 export default function StudentTable({ data }) {
@@ -90,31 +88,3 @@ export default function StudentTable({ data }) {
         </div>
     );
 }
-
-// import {
-//     Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
-// } from "@mui/material";
-
-// export default function StudentTable({ data }) {
-//     return (
-//         <TableContainer component={Paper}>
-//             <Table>
-//                 <TableHead>
-//                     <TableRow>
-//                         <TableCell>No.</TableCell>
-//                         <TableCell>Hospital Name</TableCell>
-//                     </TableRow>
-//                 </TableHead>
-
-//                 <TableBody>
-//                     {data.map((row, id) => (
-//                         <TableRow key={id}>
-//                             <TableCell>{row.id}</TableCell>
-//                             <TableCell>{row.name}</TableCell>
-//                         </TableRow>
-//                     ))}
-//                 </TableBody>
-//             </Table>
-//         </TableContainer>
-//     );
-// }

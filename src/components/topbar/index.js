@@ -12,10 +12,10 @@ import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import AccountCircle from "@mui/icons-material/AccountCircle";
+import axios from "axios";
 import LoadingButton from "../common/LoadingButton";
 import { getMenus } from "../left-menu/utils";
 import ShowSnackbarAlert from "../common/SnackBarAlert";
-import { setAuthTokenToLocalStorage } from "../../axios";
 import { EVENTS, GlobalEventEmitter, UserContext } from "../../services";
 
 export default function Topbar() {
@@ -57,13 +57,16 @@ export default function Topbar() {
     }, []);
 
     const handleLogout = useCallback(() => {
-        setUserData({
-            token: undefined,
-            user: undefined,
-            fetched: true
-        });
-        setAuthTokenToLocalStorage("");
-        ShowSnackbarAlert({ message: "Logged out successfully" });
+        try {
+            const res = axios.post("/user/logout");
+            setUserData({
+                user: undefined,
+                fetched: true
+            });
+            ShowSnackbarAlert({ message: res.data.message });
+        } catch (err) {
+            ShowSnackbarAlert({ message: err.response.data.message, severity: "error" });
+        }
     }, []);
 
     function renderLogout() {
@@ -120,6 +123,9 @@ export default function Topbar() {
         updateHeader();
     }, [location]);
 
+    if (!userData.user) {
+        return null;
+    }
     return (
         <AppBar
             position="sticky"
