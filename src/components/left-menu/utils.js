@@ -110,7 +110,7 @@ export const getMenus = (userType) => {
             Icon: PersonIcon
         },
         {
-            id: "cc-placements",
+            id: "community-placements",
             name: "Community Placements",
             Icon: LocationOnIcon
         },

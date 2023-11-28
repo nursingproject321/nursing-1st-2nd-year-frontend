@@ -15,6 +15,8 @@ import ClinicalPlan from "./components/student-dashboard/ClinicalPlan";
 import RegistrationToggle from "./components/admin-dashboard/RegistrationToggle";
 import StudentPlacements from "./components/admin-dashboard/StudentPlacements";
 import RegisteredClinicalPlan from "./components/student-dashboard/RegisteredClinicalPlan";
+import HospitalPlacements from "./components/admin-dashboard/HospitalPlacements";
+import AgencyPlacements from "./components/admin-dashboard/AgencyPlacements";
 
 function RequireAuth() {
     const { userData } = useContext(UserContext);
@@ -70,6 +72,9 @@ export default function AppRoutes() {
                     <Route path="/admin" element={<Outlet />}>
                         <Route path="" element={<Navigate to="/admin/hospital-list" />} />
                         <Route path="hospital-list" element={<AdminHospitalList />} />
+
+                        <Route path="hospital-placements" element={<AgencyPlacements agencyType="hospital" />} />
+                        <Route path="community-placements" element={<AgencyPlacements agencyType="community" />} />
 
                         <Route path="student-placements" element={<StudentPlacements />} />
                         <Route path="registration-toggle" element={<RegistrationToggle />} />
