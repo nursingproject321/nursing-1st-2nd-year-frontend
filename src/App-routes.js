@@ -3,28 +3,12 @@ import {
     Navigate, Outlet, Route, Routes, useLocation, Redirect
 } from "react-router-dom";
 import Login from "./components/auth/login";
-import Hospitals from "./components/hospitals";
-import AddEditHospital from "./components/hospitals/add-edit-hospital";
-import Schools from "./components/schools";
-import AddEditSchool from "./components/schools/add-edit-school";
-import Instructors from "./components/instructors";
-import Students from "./components/students";
-import AddEditInstructor from "./components/instructors/add-edit-instructor";
-import PlacementLocations from "./components/placement-locations";
-import AddEditPlacementLocation from "./components/placement-locations/add-edit-placement-location";
-import AddEditStudent from "./components/students/add-edit-student";
-import Placements from "./components/placements";
-import NewPlacement from "./components/placements/new-placement";
-import ViewPlacement from "./components/placements/view-placement";
 import { UserContext } from "./services";
-import StudentDashboard from "./components/student-dashboard";
 import CCList from "./components/student-dashboard/cclist";
 import HospitalList from "./components/student-dashboard/HospitalList";
 import DetailsPage from "./components/student-dashboard/DetailsPage";
 import HospitalRegistrationForm from "./components/student-dashboard/hospital_registration";
-import AdminDashboard from "./components/admin-dashboard";
 import CCRegistrationForm from "./components/student-dashboard/cc_registration";
-import CommunityList from "./components/admin-dashboard/community_list";
 import RegisteredAgencies from "./components/student-dashboard/RegisteredAgencies";
 import AdminHospitalList from "./components/admin-dashboard/AdminHospitalList";
 import ClinicalPlan from "./components/student-dashboard/ClinicalPlan";
