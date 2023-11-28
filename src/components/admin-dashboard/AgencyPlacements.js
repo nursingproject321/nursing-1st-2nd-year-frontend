@@ -68,7 +68,7 @@ function AgencyPlacements(props) {
     };
 
     useEffect(() => {
-        setStudentsFetched(false);
+        handleBack();
         fetchAgencies();
     }, [agencyType]);
 
