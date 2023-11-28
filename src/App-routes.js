@@ -30,6 +30,7 @@ import AdminHospitalList from "./components/admin-dashboard/AdminHospitalList";
 import ClinicalPlan from "./components/student-dashboard/ClinicalPlan";
 import RegistrationToggle from "./components/admin-dashboard/RegistrationToggle";
 import StudentPlacements from "./components/admin-dashboard/StudentPlacements";
+import RegisteredClinicalPlan from "./components/student-dashboard/RegisteredClinicalPlan";
 
 function RequireAuth() {
     const { userData } = useContext(UserContext);
@@ -77,6 +78,7 @@ export default function AppRoutes() {
                     <Route path="hospital-register" element={<HospitalRegistrationForm />} />
                     <Route path="cc-register" element={<CCRegistrationForm />} />
                     <Route path="registered-agencies" element={<RegisteredAgencies />} />
+                    <Route path="registered-clinical-plan" element={<RegisteredClinicalPlan />} />
                     <Route path="details/:id" element={<DetailsPage />} />
                     {/* <Route path="*" element={<Navigate to="/students" replace />} /> */}
                 </Route>
