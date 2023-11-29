@@ -29,7 +29,7 @@ export default function Login() {
     const passwordRef = useRef(null);
     const btnRef = useRef(null);
 
-    const handleLogin = async (userType) => {
+    const handleLogin = async () => {
         try { // Perform login logic
             const username = usernameRef.current.value();
             const password = passwordRef.current.value();
@@ -45,11 +45,11 @@ export default function Login() {
                 {
                     username,
                     password
-                // user_type: userType
                 }
             );
             const { user } = res.data;
             setUserData({ user, fetched: true });
+            const userType = user.type;
             const route = userType === "admin" ? "/admin" : "/student";
             navigate(route);
             // navigate("/student");
@@ -107,26 +107,14 @@ export default function Login() {
         );
     }
 
-    function renderAdminLoginBtn() {
+    function renderLoginBtn() {
         return (
             <LoadingButton
                 ref={btnRef}
-                label="Admin Login"
+                label="Login"
                 // onClick={handleSubmit}
-                onClick={handleAdminLogin}
+                onClick={handleLogin}
                 sx={{ mt: 3, width: 150 }}
-            />
-        );
-    }
-
-    function renderStudentLoginBtn() {
-        return (
-            <LoadingButton
-                ref={btnRef}
-                label="Student Login"
-                // onClick={handleStudentSubmit}
-                onClick={handleStudentLogin}
-                sx={{ mt: 3, width: 150, ml: 3 }}
             />
         );
     }
@@ -194,8 +182,7 @@ export default function Login() {
 
                 {renderUsername()}
                 {renderPassword()}
-                {renderAdminLoginBtn()}
-                {renderStudentLoginBtn()}
+                {renderLoginBtn()}
             </Paper>
         </Box>
     );
