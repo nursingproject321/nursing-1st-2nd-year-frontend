@@ -100,7 +100,7 @@ export const getMenus = (userType) => {
             Icon: SchoolIcon
         },
         {
-            id: "list-clinical-plan",
+            id: "clinical-plan-list",
             name: "List of Clinical Plans of Students",
             Icon: SchoolIcon
         },
