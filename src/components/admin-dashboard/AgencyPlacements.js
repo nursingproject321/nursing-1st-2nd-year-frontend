@@ -7,9 +7,11 @@ import {
     CardContent,
     TextField,
     Grid,
-    Button
+    Button,
+    Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
 } from "@mui/material";
 import ShowSnackbarAlert from "../common/SnackBarAlert";
+import { EVENTS, GlobalEventEmitter } from "../../services";
 
 function AgencyPlacements(props) {
     const { agencyType } = props;
@@ -30,7 +32,7 @@ function AgencyPlacements(props) {
             const response = await axios.post("/agency/placements", {
                 id: selectedAgencyId
             });
-            setAgencyPlacements(response.data.agency.placements);
+            setAgencyPlacements(response.data.agency);
             setStudentsFetched(true);
         } catch (error) {
             ShowSnackbarAlert({
@@ -84,9 +86,6 @@ function AgencyPlacements(props) {
 
     const renderAgencies = () => (
         <>
-            <Typography variant="h5" gutterBottom>
-                {agencyType === "hospital" ? "Hospital Placements" : "Community Placements"}
-            </Typography>
 
             <TextField
                 label="Search Agency"
@@ -129,32 +128,63 @@ function AgencyPlacements(props) {
                 variant="contained"
                 color="primary"
                 onClick={handleBack}
+                sx={{ mb: "20px" }}
             >
                 Back
             </Button>
+            {/* <Typography variant="h6" gutterBottom>
+                Students Registered For
+            </Typography> */}
             <Typography variant="h6" gutterBottom>
-                Students Registered:
+                {agencyPlacements.placement_type}
             </Typography>
-            <ul>
-                {agencyPlacements.map((placement) => (
-                    <li key={placement.student._id}>
-                        {placement.student.fname}
-                        {" "}
-                        {placement.student.lname}
-                        {" "}
-                        -
-                        {" "}
-                        {placement.student.email}
-                        {" "}
-                        {placement.student.studentID}
-                    </li>
-                ))}
-            </ul>
+            <Typography variant="body2">
+                {agencyPlacements.name}
+            </Typography>
+            <TableContainer component={Paper}>
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>Student ID</TableCell>
+                            <TableCell>First Name</TableCell>
+                            <TableCell>Term</TableCell>
+                            <TableCell>Email</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {agencyPlacements.placements.map((placement) => (
+                            <TableRow key={placement.student._id}>
+                                <TableCell>{placement.student.studentId}</TableCell>
+                                <TableCell>
+                                    {placement.student.fname}
+                                    {" "}
+                                    {placement.student.lname}
+                                </TableCell>
+                                <TableCell>
+                                    {placement.student.term}
+                                    {" "}
+                                    {placement.student.year}
+                                </TableCell>
+                                <TableCell>{placement.student.email}</TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
         </Box>
     );
 
+    useEffect(() => {
+        GlobalEventEmitter.emit(EVENTS.UPDATE_TOP_BAR, {
+            text: agencyType === "hospital" ? "Hospital Placements" : "Community Placements"
+        });
+    });
+
     return (
-        <Box sx={{ margin: "10px" }}>
+        <Box sx={{
+            margin: "10px 10px 10px 10px"
+        }}
+        >
             {!studentsFetched && renderAgencies()}
             {/* Display the list of students */}
             {studentsFetched && renderStudents()}
