@@ -145,19 +145,27 @@ function AgencyPlacements(props) {
                 <Table>
                     <TableHead>
                         <TableRow>
-                            <TableCell>First Name</TableCell>
-                            <TableCell>Last Name</TableCell>
-                            <TableCell>Email</TableCell>
                             <TableCell>Student ID</TableCell>
+                            <TableCell>First Name</TableCell>
+                            <TableCell>Term</TableCell>
+                            <TableCell>Email</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {agencyPlacements.placements.map((placement) => (
                             <TableRow key={placement.student._id}>
-                                <TableCell>{placement.student.fname}</TableCell>
-                                <TableCell>{placement.student.lname}</TableCell>
-                                <TableCell>{placement.student.email}</TableCell>
                                 <TableCell>{placement.student.studentId}</TableCell>
+                                <TableCell>
+                                    {placement.student.fname}
+                                    {" "}
+                                    {placement.student.lname}
+                                </TableCell>
+                                <TableCell>
+                                    {placement.student.term}
+                                    {" "}
+                                    {placement.student.year}
+                                </TableCell>
+                                <TableCell>{placement.student.email}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
