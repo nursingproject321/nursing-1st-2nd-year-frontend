@@ -33,7 +33,7 @@ function ClinicalPlansList() {
 
     useEffect(() => {
         GlobalEventEmitter.emit(EVENTS.UPDATE_TOP_BAR, {
-            text: "Student Placement Details"
+            text: "Clinical Plans"
         });
     });
 

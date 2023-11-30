@@ -95,7 +95,7 @@ export const getMenus = (userType) => {
             Icon: LocalHospitalIcon
         },
         {
-            id: "clinical-plan",
+            id: "create-clinical-plan",
             name: "Create Clinical Plan",
             Icon: SchoolIcon
         },
