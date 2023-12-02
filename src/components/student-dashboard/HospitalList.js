@@ -4,7 +4,6 @@ import {
 } from "react";
 import Box from "@mui/material/Box";
 import { observer } from "mobx-react";
-import { createSearchParams, useNavigate, useLocation } from "react-router-dom";
 import { useStore } from "../../store";
 import StudentTable from "./studentTable";
 import { EVENTS, GlobalEventEmitter } from "../../services";

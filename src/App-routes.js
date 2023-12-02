@@ -18,6 +18,7 @@ import RegisteredClinicalPlan from "./components/student-dashboard/RegisteredCli
 import AgencyPlacements from "./components/admin-dashboard/AgencyPlacements";
 import ClinicalPlansList from "./components/admin-dashboard/ClinicalPlansList";
 import SetSemOptions from "./components/admin-dashboard/SetSemOptions";
+import AddAgency from "./components/admin-dashboard/AddAgency";
 
 function RequireAuth() {
     const { userData } = useContext(UserContext);
@@ -73,7 +74,7 @@ export default function AppRoutes() {
                     <Route path="/admin" element={<Outlet />}>
                         <Route path="" element={<Navigate to="/admin/hospital-list" />} />
                         <Route path="hospital-list" element={<AdminHospitalList />} />
-
+                        <Route path="add-agency/:agencyType" element={<AddAgency />} />
                         <Route path="create-clinical-plan" element={<SetSemOptions />} />
                         <Route path="clinical-plan-list" element={<ClinicalPlansList />} />
                         <Route path="hospital-placements" element={<AgencyPlacements agencyType="hospital" />} />
