@@ -13,21 +13,25 @@ export default class StudentStore {
         makeAutoObservable(this);
     }
 
-    async fetch(params = {}) {
-        params.limit = FETCH_LIMIT;
-        const response = await axios.get(`/location_form?${new URLSearchParams(params).toString()}`);
+    // async fetch(params = {}) {
+    async fetch() {
+        // params.limit = FETCH_LIMIT;
+        const response = await axios.get("/student/list");
         const { data, totalCount } = response.data;
         runInAction(() => {
-            if (params.start === 0) {
-                this.list = data.map((obj) => ({
-                    ...obj,
-                    placementsHistoryLength: obj.placementsHistory?.length || 0
-                }));
-                this.totalCount = totalCount;
-                this.fetched = true;
-            } else {
-                this.list = toJS(this.list).concat(data);
-            }
+            this.list = data;
+            this.totalCount = totalCount;
+            this.fetched = true;
+            // if (params.start === 0) {
+            //     this.list = data.map((obj) => ({
+            //         ...obj,
+            //         placementsHistoryLength: obj.placementsHistory?.length || 0
+            //     }));
+            //     this.totalCount = totalCount;
+            //     this.fetched = true;
+            // } else {
+            //     this.list = toJS(this.list).concat(data);
+            // }
         });
     }
 

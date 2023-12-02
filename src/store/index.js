@@ -9,10 +9,10 @@ import StudentStore from "./student-store";
 
 export const store = {
     hospitalStore: new HospitalStore(),
-    communityStore: new CommunityStore()
+    communityStore: new CommunityStore(),
     // instructorStore: new InstructorStore(),
     // placementLocationStore: new PlacementLocationStore(),
-    // studentStore: new StudentStore(),
+    studentStore: new StudentStore()
     // placementStore: new PlacementStore()
 };
 
