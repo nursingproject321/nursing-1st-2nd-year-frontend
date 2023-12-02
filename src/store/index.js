@@ -9,7 +9,6 @@ import StudentStore from "./student-store";
 
 export const store = {
     hospitalStore: new HospitalStore(),
-    schoolStore: new SchoolStore(),
     communityStore: new CommunityStore()
     // instructorStore: new InstructorStore(),
     // placementLocationStore: new PlacementLocationStore(),

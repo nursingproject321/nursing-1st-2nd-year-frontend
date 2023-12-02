@@ -17,22 +17,24 @@ import ShowSnackbarAlert, { ShowErrorAlert, ShowSuccessAlert } from "../common/S
 import Table from "../common/Table";
 import ShowDialog from "../common/Dialog";
 import UploadFile from "../common/UploadFile";
+import { EVENTS, GlobalEventEmitter } from "../../services";
 import { SCHOOL_IMPORT_REQUIRED_HEADERS } from "../utils";
 
-function AdminHospitalList() {
-    const { hospitalStore } = useStore();
+function AdminAgencyList(props) {
+    const { agencyType } = props;
+    const agencyStore = agencyType === "hospital" ? useStore().hospitalStore : useStore().communityStore;
     const uploadFileRef = useRef(null);
     const navigate = useNavigate();
 
-    const { list, totalCount, fetched } = hospitalStore;
+    const { list, totalCount, fetched } = agencyStore;
 
     const handleAddClick = useCallback(() => {
-        navigate("/admin/add-agency/hospital");
+        navigate(`/admin/add-agency/${agencyType}`);
     }, []);
 
     const handleImportClick = useCallback(() => {
         ShowDialog({
-            title: "Import Schools",
+            title: "Import Agency",
             actionBtnName: "Import",
             content: <UploadFile
                 ref={uploadFileRef}
@@ -42,7 +44,7 @@ function AdminHospitalList() {
                 const fileData = await uploadFileRef.current.getFileData();
                 if (fileData) {
                     try {
-                        await hospitalStore.import(fileData);
+                        await agencyStore.import(fileData);
                         ShowSuccessAlert("Imported successfully");
                     } catch (err) {
                         ShowErrorAlert(err.message);
@@ -54,24 +56,22 @@ function AdminHospitalList() {
         });
     }, []);
 
-    const handleEditRow = useCallback((index) => {
-        const schoolList = toJS(hospitalStore.list);
-        navigate({
-            pathname: "edit",
-            search: createSearchParams({
-                id: schoolList[index]._id
-            }).toString()
-        });
+    const handleEditRow = useCallback(async (index) => {
+        const schoolList = toJS(agencyStore.list);
+        const id = agencyStore.list[index]._id;
+        console.log("index", id);
+        navigate(`/admin/edit-agency/hospital/${id}`);
+        await agencyStore.fetchAll();
     }, []);
 
     const handleDeleteRow = useCallback((index) => {
         ShowConfirmDialog({
-            title: "Delete School",
-            description: "Are you sure you want to delete this school?",
+            title: "Delete Agency",
+            description: "Are you sure you want to delete this agency?",
             actionBtnName: "Delete",
             onConfirm: async () => {
                 try {
-                    await hospitalStore.delete(index);
+                    await agencyStore.delete(index);
                     ShowSnackbarAlert({
                         message: "Deleted successfully"
                     });
@@ -87,12 +87,12 @@ function AdminHospitalList() {
 
     const handleDeleteSelectedRows = useCallback((selectedRows) => {
         ShowConfirmDialog({
-            title: "Delete Schools",
-            description: `Are you sure you want to delete these ${selectedRows.length} school(s)?`,
+            title: "Delete Agency",
+            description: `Are you sure you want to delete these ${selectedRows.length} agency(s)?`,
             actionBtnName: "Delete",
             onConfirm: async () => {
                 try {
-                    await hospitalStore.deleteMultiple(selectedRows);
+                    await agencyStore.deleteMultiple(selectedRows);
                     ShowSnackbarAlert({
                         message: "Deleted successfully"
                     });
@@ -177,14 +177,20 @@ function AdminHospitalList() {
     ], []);
 
     useEffect(() => {
-        const fetchSchools = async () => {
+        const fetchHospitals = async () => {
             if (!fetched) {
-                await hospitalStore.fetchAll();
+                await agencyStore.fetchAll();
             }
         };
 
-        fetchSchools();
+        fetchHospitals();
     }, []);
+
+    useEffect(() => {
+        GlobalEventEmitter.emit(EVENTS.UPDATE_TOP_BAR, {
+            text: agencyType === "hospital" ? "Hospital List" : "Community Clinic List"
+        });
+    }, [agencyType]);
 
     return (
         <Box>
@@ -224,4 +230,4 @@ function AdminHospitalList() {
     );
 }
 
-export default observer(AdminHospitalList);
+export default observer(AdminAgencyList);

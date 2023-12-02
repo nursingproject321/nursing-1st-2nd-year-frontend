@@ -10,7 +10,6 @@ import DetailsPage from "./components/student-dashboard/DetailsPage";
 import HospitalRegistrationForm from "./components/student-dashboard/hospital_registration";
 import CCRegistrationForm from "./components/student-dashboard/cc_registration";
 import RegisteredAgencies from "./components/student-dashboard/RegisteredAgencies";
-import AdminHospitalList from "./components/admin-dashboard/AdminHospitalList";
 import ClinicalPlan from "./components/student-dashboard/ClinicalPlan";
 import RegistrationToggle from "./components/admin-dashboard/RegistrationToggle";
 import StudentPlacements from "./components/admin-dashboard/StudentPlacements";
@@ -19,6 +18,7 @@ import AgencyPlacements from "./components/admin-dashboard/AgencyPlacements";
 import ClinicalPlansList from "./components/admin-dashboard/ClinicalPlansList";
 import SetSemOptions from "./components/admin-dashboard/SetSemOptions";
 import AddAgency from "./components/admin-dashboard/AddAgency";
+import AdminAgencyList from "./components/admin-dashboard/AdminAgencyList";
 
 function RequireAuth() {
     const { userData } = useContext(UserContext);
@@ -73,8 +73,10 @@ export default function AppRoutes() {
                 <Route element={<RequireAuth />}>
                     <Route path="/admin" element={<Outlet />}>
                         <Route path="" element={<Navigate to="/admin/hospital-list" />} />
-                        <Route path="hospital-list" element={<AdminHospitalList />} />
+                        <Route path="hospital-list" element={<AdminAgencyList agencyType="hospital" />} />
+                        <Route path="community-list" element={<AdminAgencyList agencyType="community" />} />
                         <Route path="add-agency/:agencyType" element={<AddAgency />} />
+                        <Route path="edit-agency/:agencyType/:id" element={<AddAgency />} />
                         <Route path="create-clinical-plan" element={<SetSemOptions />} />
                         <Route path="clinical-plan-list" element={<ClinicalPlansList />} />
                         <Route path="hospital-placements" element={<AgencyPlacements agencyType="hospital" />} />

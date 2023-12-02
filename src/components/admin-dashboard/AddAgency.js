@@ -11,8 +11,7 @@ import { useStore } from "../../store";
 import { EVENTS, GlobalEventEmitter } from "../../services";
 
 function AddAgency() {
-    const { agencyType } = useParams();
-    const { hospitalStore } = useStore();
+    const { agencyType, id } = useParams();
     const navigate = useNavigate();
     const [agencyInfo, setAgencyInfo] = useState({
         name: "",
@@ -29,10 +28,14 @@ function AddAgency() {
         total_capacity: 0,
         visibility: true
     });
+    // const { hospitalStore } = useStore();
+    const agencyStore = agencyType === "hospital" ? useStore().hospitalStore : useStore().communityStore;
 
     useEffect(() => {
+        const suff = agencyType === "hospital" ? "Hospital" : "Community Clinic";
+        const pre = id ? "Edit " : "Add New ";
         GlobalEventEmitter.emit(EVENTS.UPDATE_TOP_BAR, {
-            text: agencyType === "hospital" ? "Add new Hospital" : "Add new Community Clinic"
+            text: `${pre} ${suff}`
         });
     }, [agencyType]);
 
@@ -43,11 +46,17 @@ function AddAgency() {
 
     const handleSubmit = async () => {
         try {
-            const requestBody = { ...agencyInfo, agency_type: agencyType };
-            const response = await axios.post("/agency/register", requestBody);
-            await hospitalStore.fetchAll();
-            console.log("Agency created successfully:", response.data);
-            ShowSnackbarAlert({ message: "Hospital Added" });
+            const requestBody = { ...agencyInfo, agency_type: agencyType, id };
+            if (id) {
+                const response = await axios.post("/agency/update", requestBody);
+                console.log("Agency created successfully:", response.data);
+                ShowSnackbarAlert({ message: "Details Updated" });
+            } else {
+                const response = await axios.post("/agency/register", requestBody);
+                console.log("Agency created successfully:", response.data);
+                ShowSnackbarAlert({ message: "Agency Added" });
+            }
+            await agencyStore.fetchAll();
             navigate(`/admin/${agencyType}-list/`);
         } catch (error) {
             // Handle errors
@@ -56,9 +65,57 @@ function AddAgency() {
         }
     };
 
+    const setAgencyInfoFun = async () => {
+        try {
+            const response = await axios.post("/agency/id", { id });
+            /* eslint-disable camelcase */
+            const {
+                name,
+                placement_type,
+                address,
+                description,
+                website,
+                student_roles,
+                lab_practice_required,
+                required_readings,
+                car_needed,
+                languages,
+                police_clearance,
+                total_capacity,
+                visibility
+            } = response.data;
+            setAgencyInfo({
+                name,
+                placement_type,
+                address,
+                description,
+                website,
+                student_roles,
+                lab_practice_required,
+                required_readings,
+                car_needed,
+                languages,
+                police_clearance,
+                total_capacity,
+                visibility
+            });
+            /* eslint-enable camelcase */
+        } catch (error) {
+            console.error("Error fetching agency:", error);
+            ShowSnackbarAlert({
+                message: error.response.data.message,
+                severity: "error"
+            });
+        }
+    };
+
+    useEffect(() => {
+        if (id) { setAgencyInfoFun(); }
+    }, []);
+
     return (
-        <Box sx={{ margin: "10px 5% 10px 5%", overflowY: "auto", marginBottom: "10px" }}>
-            <form>
+        <Box sx={{ margin: "10px", overflowY: "auto", marginBottom: "10px" }}>
+            <form style={{ margin: "10px" }}>
                 <TextField
                     label="Agency Name"
                     name="name"
@@ -187,7 +244,7 @@ function AddAgency() {
                     onClick={handleSubmit}
                     sx={{ marginTop: 2 }}
                 >
-                    Create Agency
+                    {id ? "Edit" : "Create Agency"}
                 </Button>
             </form>
         </Box>

@@ -90,7 +90,7 @@ export const getMenus = (userType) => {
             Icon: PeopleAltIcon
         },
         {
-            id: "cc-list",
+            id: "community-list",
             name: "List of available agencies - Community Clinical",
             Icon: LocalHospitalIcon
         },
