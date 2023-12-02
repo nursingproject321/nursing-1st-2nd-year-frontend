@@ -75,10 +75,10 @@ class HospitalStore {
         await this.fetchAll();
     }
 
-    // async import(data) {
-    //     await axios.post("/hospitals/import", data);
-    //     await this.fetchAll();
-    // }
+    async import(data) {
+        await axios.post("/agency/import", data);
+        await this.fetchAll();
+    }
 }
 
 export default HospitalStore;

@@ -30,6 +30,13 @@ export const parseCSVFile = (file) => new Promise((resolve, reject) => {
 
 export const checker = (arr, target) => arr.every((value) => target.includes(value.toLowerCase()));
 
+export const AGENCY_IMPORT_REQUIRED_HEADERS = {
+    Name: "name",
+    "Placement Type": "placement_type",
+    "Agency Type": "agency_type",
+    "Total Capacity": "total_capacity"
+};
+
 export const HOSPITAL_IMPORT_REQUIRED_HEADERS = {
     Name: "name",
     Campus: "campus",

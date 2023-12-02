@@ -18,7 +18,7 @@ import Table from "../common/Table";
 import ShowDialog from "../common/Dialog";
 import UploadFile from "../common/UploadFile";
 import { EVENTS, GlobalEventEmitter } from "../../services";
-import { SCHOOL_IMPORT_REQUIRED_HEADERS } from "../utils";
+import { AGENCY_IMPORT_REQUIRED_HEADERS } from "../utils";
 
 function AdminAgencyList(props) {
     const { agencyType } = props;
@@ -38,12 +38,13 @@ function AdminAgencyList(props) {
             actionBtnName: "Import",
             content: <UploadFile
                 ref={uploadFileRef}
-                headers={SCHOOL_IMPORT_REQUIRED_HEADERS}
+                headers={AGENCY_IMPORT_REQUIRED_HEADERS}
             />,
             onConfirm: async () => {
                 const fileData = await uploadFileRef.current.getFileData();
                 if (fileData) {
                     try {
+                        console.log("fileData: ", fileData);
                         await agencyStore.import(fileData);
                         ShowSuccessAlert("Imported successfully");
                     } catch (err) {
