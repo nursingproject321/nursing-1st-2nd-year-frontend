@@ -74,9 +74,9 @@ function StudentPlacements() {
                                 key={placementIndex}
                             >
                                 <div>
-                                    <Typography variant="subtitle1">{placement.agency.name}</Typography>
+                                    <Typography variant="subtitle1">{placement.agency?.name}</Typography>
                                     <Typography variant="body2">
-                                        {`Type: ${placement.agency.placement_type}, Agency Type: ${placement.agency.agency_type}`}
+                                        {placement.agency ? `Type: ${placement.agency?.placement_type}, Agency Type: ${placement.agency?.agency_type}` : ""}
                                     </Typography>
                                 </div>
                             </Grid>

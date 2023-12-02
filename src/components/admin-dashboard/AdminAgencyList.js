@@ -215,9 +215,9 @@ function AdminAgencyList(props) {
                             handleDeleteSelectedRows(indexes);
                             return false;
                         },
-                        downloadOptions: {
-                            filename: "Hospitals"
-                        },
+                        // downloadOptions: {
+                        //     filename: "Hospitals"
+                        // },
                         textLabels: {
                             body: {
                                 noMatch: !fetched ? "Fetching..." : "No records found"
