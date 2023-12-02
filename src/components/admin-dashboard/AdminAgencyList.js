@@ -177,14 +177,14 @@ function AdminAgencyList(props) {
     ], []);
 
     useEffect(() => {
-        const fetchHospitals = async () => {
+        const fetchAgencies = async () => {
             if (!fetched) {
                 await agencyStore.fetchAll();
             }
         };
 
-        fetchHospitals();
-    }, []);
+        fetchAgencies();
+    }, [fetched]);
 
     useEffect(() => {
         GlobalEventEmitter.emit(EVENTS.UPDATE_TOP_BAR, {
