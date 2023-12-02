@@ -13,20 +13,11 @@ class HospitalStore {
     }
 
     async fetchAll() {
-        // const requestBody = {
-        //     type: "hospital"
-        // };
-        // const sessionToken = localStorage.getItem("session-token");
         const response = await axios.post(
             "/agency/list",
             {
                 type: "hospital"
-            }// ,
-            // {
-            //     headers: {
-            //         Cookie: sessionToken
-            //     }
-            // }
+            }
         );
         const { data, totalCount } = response.data;
         runInAction(() => {
@@ -61,20 +52,28 @@ class HospitalStore {
     //     });
     // }
 
-    // async delete(index) {
-    //     const toDeleteId = this.list[index]._id;
-    //     await axios.delete(`/hospitals/${toDeleteId}`);
-    //     runInAction(() => {
-    //         this.list.splice(index, 1);
-    //         this.totalCount -= 1;
-    //     });
-    // }
+    async delete(index) {
+        const toDeleteId = this.list[index]._id;
+        await axios.post("/agency/delete", {
+            _id: toDeleteId
+        });
+        runInAction(() => {
+            this.list.splice(index, 1);
+            this.totalCount -= 1;
+        });
+    }
 
-    // async deleteMultiple(indexes) {
-    //     const toDeleteIds = indexes.map((index) => this.list[Number(index)]._id);
-    //     await axios.post("/hospitals/delete", toDeleteIds);
-    //     await this.fetchAll();
-    // }
+    async deleteMultiple(indexes) {
+        const toDeleteIds = indexes.map((index) => this.list[Number(index)]._id);
+        // console.log("toDeleteIds", toDeleteIds);
+        // await axios.post("/hospitals/delete", toDeleteIds);
+        toDeleteIds.forEach(async (id) => {
+            await axios.post("/agency/delete", {
+                _id: id
+            });
+        });
+        await this.fetchAll();
+    }
 
     // async import(data) {
     //     await axios.post("/hospitals/import", data);

@@ -123,7 +123,7 @@ export default function SetSemOptions() {
     useEffect(() => {
         fetchSemOptions(); // Fetch sem options when component mounts
         GlobalEventEmitter.emit(EVENTS.UPDATE_TOP_BAR, {
-            text: "Toggle Registration On/Off"
+            text: "Create Clinical Plan"
         });
     }, [fetchSemOptions]);
 
