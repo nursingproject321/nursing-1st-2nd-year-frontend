@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Box from "@mui/material/Box";
@@ -31,11 +31,16 @@ function AddAgency() {
     // const { hospitalStore } = useStore();
     const agencyStore = agencyType === "hospital" ? useStore().hospitalStore : useStore().communityStore;
 
+    const goBack = useCallback(() => {
+        navigate(`/admin/${agencyType}-list`);
+    }, []);
+
     useEffect(() => {
         const suff = agencyType === "hospital" ? "Hospital" : "Community Clinic";
         const pre = id ? "Edit " : "Add New ";
         GlobalEventEmitter.emit(EVENTS.UPDATE_TOP_BAR, {
-            text: `${pre} ${suff}`
+            text: `${pre} ${suff}`,
+            navigateBackTo: `/admin/${agencyType}-list`
         });
     }, [agencyType]);
 
@@ -106,6 +111,7 @@ function AddAgency() {
                 message: error.response.data.message,
                 severity: "error"
             });
+            goBack();
         }
     };
 
@@ -245,6 +251,13 @@ function AddAgency() {
                     sx={{ marginTop: 2 }}
                 >
                     {id ? "Edit" : "Create Agency"}
+                </Button>
+                <Button
+                    variant="outlined"
+                    onClick={goBack}
+                    sx={{ marginTop: 2, mx: 2 }}
+                >
+                    Cancel
                 </Button>
             </form>
         </Box>
